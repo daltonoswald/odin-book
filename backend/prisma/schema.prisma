@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String        @id @default(uuid())
+  first_name    String
+  last_name     String
+  username      String        @unique
+  password      String
+  bio           String?
+  followed_by   Follows[]     @relation("followed_by")
+  following     Follows[]     @relation("following")
+  posts         Post[]
+  post_likes    PostLike[]
+  comments      Comment[]
+  comment_likes CommentLike[]
+}
+
+model Follows {
+  followed_by    User   @relation("followed_by", fields: [followed_by_id], references: [id])
+  followed_by_id String
+  following      User   @relation("following", fields: [following_id], references: [id])
+  following_id   String
+
+  @@id([following_id, followed_by_id])
+}
+
+model Post {
+  id         String     @id @default(uuid())
+  content    String
+  userId     String
+  user       User       @relation(fields: [userId], references: [id])
+  likes      PostLike[]
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
+  comments   Comment[]
+}
+
+model Comment {
+  id         String        @id @default(uuid())
+  content    String
+  userId     String
+  user       User          @relation(fields: [userId], references: [id])
+  postId     String
+  post       Post          @relation(fields: [postId], references: [id])
+  likes      CommentLike[]
+  created_at DateTime      @default(now())
+  updated_at DateTime      @updatedAt
+}
+
+model PostLike {
+  id     String  @id @default(uuid())
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
+  post   Post?   @relation(fields: [postId], references: [id])
+  postId String?
+}
+
+model CommentLike {
+  id        String   @id @default(uuid())
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+  comment   Comment? @relation(fields: [commentId], references: [id])
+  commentId String?
+}
