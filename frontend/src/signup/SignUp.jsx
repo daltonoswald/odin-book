@@ -1,12 +1,47 @@
-// import { useNavigate } from "react-router-dom";
+/* eslint-disable react/prop-types */
+import { useNavigate } from "react-router-dom";
 import './signup.styles.css';
 
 export default function SignUp({openSignUp, setOpenSignUp}) {
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log('sign-up-submit');
+
+        const url = `http://localhost:3000/user/sign-up`
+        const formData = {
+            first_name: event.target.first_name.value,
+            last_name: event.target.last_name.value,
+            username: event.target.username.value,
+            password: event.target.password.value,
+            confirm_password: event.target.confirm_password.value,
+            bio: event.target.bio.value,
+        };
+        console.log(formData)
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+                mode: "cors",
+            });
+            const data = await response.json();
+            // console.log(`formData `, formData);
+            // console.log(`data `, data);
+            // console.log(`response `, response);
+
+            if (response.ok) {
+                console.log(response)
+                navigate('/');
+            } else {
+                console.error("Error requesting authentication:", data.message);
+                // setMessage(data.message)
+            }
+        } catch (error) {
+            console.error('Error requesting authentication:', error);
+        }
     }
 
     const closeModal = () => {

@@ -2,15 +2,26 @@ const express = require('express');
 // const passport = require('passport');
 // const session = require('express-session');
 const indexRouter = require('./routes/indexRouter');
+const userRouter = require('./routes/userRouter')
 // const { PrismaSessionStore } = require('@quixo3/prisma-session-store')
 const { PrismaClient } = require('@prisma/client');
+const cors = require('cors');
 require('dotenv').config();
 
 const path = require('node:path');
 
 const app = express();
 
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+app.use(cors({
+    origin: [
+        `http://localhost:5173`,
+    ],
+    methods: ['GET', 'PUT', 'POST', 'DELETE'],
+    optionsSuccessStatus: 204,
+}))
 
 // app.use(
 //     session({
@@ -34,6 +45,7 @@ app.use(express.urlencoded({ extended: true }));
 // app.use(passport.session());
 
 app.use('/', indexRouter);
+app.use('/user', userRouter);
 
 const assetsPath = path.join(__dirname, "public");
 app.use(express.static(assetsPath));
