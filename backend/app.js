@@ -1,6 +1,6 @@
 const express = require('express');
 // const passport = require('passport');
-// const session = require('express-session');
+const session = require('express-session');
 const indexRouter = require('./routes/indexRouter');
 const userRouter = require('./routes/userRouter')
 // const { PrismaSessionStore } = require('@quixo3/prisma-session-store')
@@ -9,15 +9,29 @@ const cors = require('cors');
 require('dotenv').config();
 
 const path = require('node:path');
+const passport = require('passport');
 
 const app = express();
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
+app.use(require('express-session')
+    ({
+        secret: process.env.SECRET,
+        resave: false,
+        saveUninitialized: true,
+        cookie: {
+            maxAge: 24 * 60 * 60 * 1000
+        }
+    })
+)
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(cors({
     origin: [
         `http://localhost:5173`,
+        '*'
     ],
     methods: ['GET', 'PUT', 'POST', 'DELETE'],
     optionsSuccessStatus: 204,

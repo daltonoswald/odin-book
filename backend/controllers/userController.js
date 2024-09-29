@@ -3,7 +3,70 @@ const { body, validationResult } = require('express-validator');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const bcryptjs = require('bcryptjs');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 require('dotenv').config();
+
+passport.use(
+    new LocalStrategy(async (username, password, done) => {
+        try {
+            const user = await prisma.user.findFirst({
+                where: {
+                    username: username
+                }
+            });
+            console.log(`username: `, username);
+            console.log(user);
+            if (!user) {
+                return done(null, false, { message: 'Username not found. Username may be case sensitive.' });
+            }
+            const match = await bcryptjs.compare(password, user.password);
+            if (!match) {
+                return done(null, false, { message: "Incorrect password" });
+            };
+            console.log(`line 27: `, user);
+            return done(null, user);
+        } catch (err) {
+            return done(err);
+        }
+    })
+)
+
+passport.serializeUser((user, done) => {
+    // console.log(`line 36: `, user)
+    done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+    try {
+        const user = await prisma.user.findUnique({
+            where: {
+                id: id
+            }
+        });
+        done(null, user)
+    } catch (err) {
+        done(err);
+    }
+});
+
+
+exports.log_in = [
+    passport.authenticate('local'),
+    function(req, res) {
+        res.json({ message: "Success", username: req.user.username });
+    }
+]
+
+exports.logout = async (req, res) => {
+    req.logout(function (err) {
+        if (err) {
+            return next(err);
+        }
+        res.json({ message: "Logout Successful!" })
+    })
+}
+
 
 exports.sign_up = [
     body('first_name', 'First Name must not be empty.')

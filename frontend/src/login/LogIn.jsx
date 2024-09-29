@@ -1,12 +1,39 @@
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import './login.styles.css';
 
 export default function LogIn({openLogIn, setOpenLogIn}) {
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log('log-in-submit');
+        const url = `http://localhost:3000/user/log-in`
+        const formData = {
+            username: event.target.username.value,
+            password: event.target.password.value,
+        };
+        console.log(formData)
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+                mode: "cors",
+            });
+            const data = await response.json();
+
+            if (response.ok) {
+                console.log(`response`, response)
+                console.log(`data`, data)
+                // navigate('/');
+            } else {
+                console.error("Error requesting authentication:", data.message);
+                // setMessage(data.message)
+            }
+        } catch (error) {
+            console.error('Error requesting authentication:', error);
+        }
     }
 
     const closeModal = () => {

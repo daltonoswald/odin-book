@@ -34,6 +34,7 @@ export default function SignUp({openSignUp, setOpenSignUp}) {
 
             if (response.ok) {
                 console.log(response)
+                console.log(data);
                 navigate('/');
             } else {
                 console.error("Error requesting authentication:", data.message);
