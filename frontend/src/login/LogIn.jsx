@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useNavigate } from "react-router-dom";
 import './login.styles.css';
 
@@ -26,7 +27,9 @@ export default function LogIn({openLogIn, setOpenLogIn}) {
             if (response.ok) {
                 console.log(`response`, response)
                 console.log(`data`, data)
-                // navigate('/');
+                localStorage.setItem('authenticationToken', data.token);
+                localStorage.setItem('username', data.user.username);
+                navigate('/home');
             } else {
                 console.error("Error requesting authentication:", data.message);
                 // setMessage(data.message)

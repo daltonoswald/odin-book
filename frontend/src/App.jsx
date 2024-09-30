@@ -1,28 +1,13 @@
 import LogIn from './login/LogIn'
 import { useState } from 'react';
 import SignUp from './signup/SignUp';
+import Nav from "./nav/Nav";
+import { useNavigate } from 'react-router-dom';
 
 const App = () => {
+    const navigate = useNavigate();
     const [openLogIn, setOpenLogIn] = useState(false);
     const [openSignUp, setOpenSignUp] = useState(false);
-
-    const handleLogout = async (event) => {
-        event.preventDefault();
-        const url = `http://localhost:3000/user/logout`
-        try {
-            const response = await fetch(url, {
-                method: "POST",
-                // credentials: 'include',
-                mode: "cors",
-            });
-
-            if (!response.ok) {
-                throw new Error("Network error.");
-            }
-        } catch (error) {
-            console.error('Error during logout: ', error);
-        }
-    }
 
     const handleOpenLogIn = () => {
         if (!openLogIn) {
@@ -43,10 +28,11 @@ const App = () => {
     }
 
     return (
+        <>
+        <Nav />
         <div>
             <p>Hi</p>
             <a href="test">Test Page</a>
-            <button onClick={handleLogout}>Logout</button>
             <button onClick={handleOpenLogIn}>Log in</button>
             {openLogIn && (
                 <LogIn openLogIn={openLogIn} setOpenLogIn={setOpenLogIn} />
@@ -56,6 +42,7 @@ const App = () => {
                 <SignUp openSignUp={openSignUp} setOpenSignUp={setOpenSignUp} />
             )}
         </div>
+        </>
     )
 }
 

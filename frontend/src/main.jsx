@@ -5,7 +5,6 @@ import Router from './Router';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <div>Fake Nav Bar</div>
     <Router />
   </StrictMode>,
 )

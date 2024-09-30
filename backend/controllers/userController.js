@@ -4,65 +4,99 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const bcryptjs = require('bcryptjs');
 const passport = require('passport');
+const jwt = require('jsonwebtoken');
 const LocalStrategy = require('passport-local').Strategy;
 require('dotenv').config();
 
-passport.use(
-    new LocalStrategy(async (username, password, done) => {
-        try {
-            const user = await prisma.user.findFirst({
-                where: {
-                    username: username
-                }
-            });
-            console.log(`username: `, username);
-            console.log(user);
-            if (!user) {
-                return done(null, false, { message: 'Username not found. Username may be case sensitive.' });
-            }
-            const match = await bcryptjs.compare(password, user.password);
-            if (!match) {
-                return done(null, false, { message: "Incorrect password" });
-            };
-            console.log(`line 27: `, user);
-            return done(null, user);
-        } catch (err) {
-            return done(err);
+// passport.use(
+//     new LocalStrategy(async (username, password, done) => {
+//         try {
+//             const user = await prisma.user.findFirst({
+//                 where: {
+//                     username: username
+//                 }
+//             });
+//             console.log(`username: `, username);
+//             console.log(user);
+//             if (!user) {
+//                 return done(null, false, { message: 'Username not found. Username may be case sensitive.' });
+//             }
+//             const match = await bcryptjs.compare(password, user.password);
+//             if (!match) {
+//                 return done(null, false, { message: "Incorrect password" });
+//             };
+//             console.log(`line 27: `, user);
+//             return done(null, user);
+//         } catch (err) {
+//             return done(err);
+//         }
+//     })
+// )
+
+// passport.serializeUser((user, done) => {
+//     // console.log(`line 36: `, user)
+//     done(null, user.id);
+// });
+
+// passport.deserializeUser(async (id, done) => {
+//     try {
+//         const user = await prisma.user.findUnique({
+//             where: {
+//                 id: id
+//             }
+//         });
+//         done(null, user)
+//     } catch (err) {
+//         done(err);
+//     }
+// });
+
+
+// exports.log_in = [
+//     passport.authenticate('local'),
+//     function(req, res) {
+//         res.cookie('session', req.user.id, { secure: true, signed: true, expires: new Date(Date.now() + 3600)})
+//         console.log('Cookies: ', req.cookies);
+//         console.log('Signed: ', req.signedCookies);
+//         res.json({ message: "Success", user: req.user});
+//     }
+// ]
+
+exports.log_in = asyncHandler(async (req, res, next) => {
+    const user = await prisma.user.findFirst({
+        where: {
+            username: req.body.username
         }
-    })
-)
-
-passport.serializeUser((user, done) => {
-    // console.log(`line 36: `, user)
-    done(null, user.id);
-});
-
-passport.deserializeUser(async (id, done) => {
+    });
+    if (!user) {
+        res.status(401).json({ message: 'Username not found' });
+    }
     try {
-        const user = await prisma.user.findUnique({
-            where: {
-                id: id
+        bcryptjs.compare(req.body.password, user.password, (err, isMatch) => {
+            if (err) return next(err);
+
+            const options = {};
+            options.expiresIn = '7d';
+            const token = jwt.sign({ user }, process.env.TOKEN_KEY, options);
+
+            if (!isMatch) {
+                res.status(401).json({ message: "Password is incorrect." });
+            } else {
+                console.log(user.username);
+                res.json({ message: 'User logged in successfully', token, user });
             }
-        });
-        done(null, user)
-    } catch (err) {
-        done(err);
+        })
+    } catch (error) {
+        return res.status(500).json({ message: "Internal Server Error." });
     }
-});
-
-
-exports.log_in = [
-    passport.authenticate('local'),
-    function(req, res) {
-        res.json({ message: "Success", username: req.user.username });
-    }
-]
+})
 
 exports.logout = async (req, res) => {
     req.logout(function (err) {
         if (err) {
             return next(err);
         }
+        res.redirect("/");
         res.json({ message: "Logout Successful!" })
     })
 }
@@ -141,3 +175,7 @@ exports.sign_up = [
         }
     }
 ]
+
+exports.testUser = async (req, res, next) => {
+    console.log(`testUser`, req.user);
+}
