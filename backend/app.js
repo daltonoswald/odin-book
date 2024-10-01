@@ -3,6 +3,7 @@ const express = require('express');
 const session = require('express-session');
 const indexRouter = require('./routes/indexRouter');
 const userRouter = require('./routes/userRouter')
+const postRouter = require('./routes/postRouter');
 // const { PrismaSessionStore } = require('@quixo3/prisma-session-store')
 const { PrismaClient } = require('@prisma/client');
 const cors = require('cors');
@@ -60,6 +61,7 @@ app.use(cors({
 
 app.use('/', indexRouter);
 app.use('/user', userRouter);
+app.use('/post', postRouter);
 
 const assetsPath = path.join(__dirname, "public");
 app.use(express.static(assetsPath));

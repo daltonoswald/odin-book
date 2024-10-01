@@ -1,7 +1,6 @@
 import LogIn from './login/LogIn'
 import { useState } from 'react';
 import SignUp from './signup/SignUp';
-import Nav from "./nav/Nav";
 import { useNavigate } from 'react-router-dom';
 
 const App = () => {
@@ -29,7 +28,6 @@ const App = () => {
 
     return (
         <>
-        <Nav />
         <div>
             <p>Hi</p>
             <a href="test">Test Page</a>
