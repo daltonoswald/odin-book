@@ -53,7 +53,6 @@ export default function NewPost({openNewPost, setOpenNewPost}) {
                         required />
                     <button className="submit-button" type='submit'>Post</button>
                 </form>
-                <p>Don&apos;t have an account? Sign up</p>
             </div>
         </>
     )

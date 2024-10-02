@@ -9,19 +9,21 @@ const { generateToken, verifyToken } = require('../middleware/middleware');
 const LocalStrategy = require('passport-local').Strategy;
 require('dotenv').config();
 
-// exports.new_post = asyncHandler(async (req, res, next) => {
-//     const errors = validationResult(req);
-//     const token = req.headers.authorization.split(' ')[1];
-//     const authorizedUser = verifyToken(token);
-//     const tokenUserId = authorizedUser.user.id;
-
-//     if (!errors.isEmpty()) {
-//         const errorsMessages = errors.array().map((error) => error.msg);
-//         res.json({ error: errorsMessages})
-//     } else {
-
-//     }
-// })
+exports.findPosts = asyncHandler(async (req, res, next) => {
+    const token = req.headers.authorization.split(' ')[1];
+    const authorizedUser = verifyToken(token);
+    const findPosts = await prisma.user.findMany({
+        where: {
+            id: authorizedUser.user.id
+        },
+        include: {
+            posts: true,
+            following: true,
+        }
+    })
+    console.log(findPosts);
+    res.json({ posts: findPosts })
+})
 
 exports.new_post = [
     body('content', 'The post must be between 1 and 250 characters.')

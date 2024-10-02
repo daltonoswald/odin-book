@@ -5,6 +5,7 @@ const prisma = new PrismaClient();
 const bcryptjs = require('bcryptjs');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
+const { generateToken, verifyToken } = require('../middleware/middleware');
 const LocalStrategy = require('passport-local').Strategy;
 require('dotenv').config();
 
@@ -175,6 +176,85 @@ exports.sign_up = [
         }
     }
 ]
+
+exports.find_users = asyncHandler( async (req, res, next) => {
+    const token = req.headers.authorization.split(' ')[1];
+    const authorizedUser = verifyToken(token);
+    const users = await prisma.user.findMany({
+        // where: {
+        //     username: {
+        //         contains: req.body.username
+        //     }
+        // },
+        where: {
+            OR: [
+                {
+                    username: {
+                        contains: req.body.username
+                    }
+                }
+            ],
+            NOT: [
+                {
+                    username: {
+                        equals: authorizedUser.user.username
+                    }
+                }
+            ]
+        },
+        select: {
+            id: true,
+            username: true,
+        }
+    });
+    if (!users) {
+        res.status(401).json({ message: `No users found matching ${req.body.username}`});
+    } else {
+        res.json({ users: users });
+    }
+
+})
+
+exports.follow_user = asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    const token = req.headers.authorization.split(' ')[1];
+    const authorizedUser = verifyToken(token);
+    const userToFollow = req.body.userToFollow
+    console.log(userToFollow);
+
+    // const user = await prisma.user.update({
+    //     where: {
+    //         id: authorizedUser.user.id
+    //     },
+    //     data: {
+    //         following: {
+    //             connect: {
+    //                 following_id: userToFollow
+    //             }
+    //         }
+    //     }
+    // })
+    // console.log(user);
+
+    const findExisting = await prisma.follows.findMany({
+        where: {
+            followed_by_id: authorizedUser.user.id,
+            following_id: userToFollow
+        }
+    })
+
+    if (!findExisting) {
+        const follow = await prisma.follows.create({
+            data: {
+                followed_by_id: authorizedUser.user.id,
+                following_id: userToFollow
+            }
+        })
+        res.json({ message: 'User followed sucessfully' });
+    } else {
+        res.json({ message: 'Already following'});
+    }
+})
 
 exports.testUser = async (req, res, next) => {
     console.log(`testUser`, req.user);
