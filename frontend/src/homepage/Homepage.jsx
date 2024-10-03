@@ -21,8 +21,8 @@ const Homepage = () => {
                 })
                 if (response.ok) {
                     const postData = await response.json()
-                    console.log(postData.posts[0]);
-                    setPosts(postData.posts[0])
+                    console.log(postData.posts);
+                    setPosts(postData.posts)
                 }
             } catch (error) {
                 console.error(`Errors: ${error}`);

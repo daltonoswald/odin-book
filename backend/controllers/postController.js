@@ -12,17 +12,36 @@ require('dotenv').config();
 exports.findPosts = asyncHandler(async (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
     const authorizedUser = verifyToken(token);
-    const findPosts = await prisma.user.findMany({
+    const findFollowing = await prisma.follows.findMany({
         where: {
-            id: authorizedUser.user.id
+            followed_by_id: authorizedUser.user.id
         },
-        include: {
-            posts: true,
-            following: true,
+        select: {
+            following_id: true,
         }
     })
-    console.log(findPosts);
-    res.json({ posts: findPosts })
+    followingList = findFollowing.map(function(followedBy) {
+        return followedBy.following_id;
+    })
+    const authorizedUserId = authorizedUser.user.id
+    followingList.push(authorizedUserId);
+    const findPosts = await prisma.post.findMany({
+        where: {
+            userId: { in: followingList }
+        },
+        include: {
+            user: {
+                select: {
+                    first_name: true,
+                    last_name: true,
+                    username: true,
+                    id: true,
+                }
+            }
+        }
+    })
+    console.log(`findPosts: `, findPosts);
+    res.json({ posts: findPosts });
 })
 
 exports.new_post = [

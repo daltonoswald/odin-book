@@ -242,8 +242,9 @@ exports.follow_user = asyncHandler(async (req, res, next) => {
             following_id: userToFollow
         }
     })
+    console.log(`findExisting: `, findExisting)
 
-    if (!findExisting) {
+    if (findExisting.length === 0) {
         const follow = await prisma.follows.create({
             data: {
                 followed_by_id: authorizedUser.user.id,
