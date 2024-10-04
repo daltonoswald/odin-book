@@ -37,11 +37,15 @@ exports.findPosts = asyncHandler(async (req, res, next) => {
                     username: true,
                     id: true,
                 }
-            }
+            },
+            likes: true,
+        },
+        orderBy: {
+            updated_at: 'desc'
         }
     })
     console.log(`findPosts: `, findPosts);
-    res.json({ posts: findPosts });
+    res.json({ posts: findPosts, user: authorizedUser.user });
 })
 
 exports.new_post = [
