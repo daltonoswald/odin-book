@@ -222,20 +222,6 @@ exports.follow_user = asyncHandler(async (req, res, next) => {
     const userToFollow = req.body.userToFollow
     console.log(userToFollow);
 
-    // const user = await prisma.user.update({
-    //     where: {
-    //         id: authorizedUser.user.id
-    //     },
-    //     data: {
-    //         following: {
-    //             connect: {
-    //                 following_id: userToFollow
-    //             }
-    //         }
-    //     }
-    // })
-    // console.log(user);
-
     const findExisting = await prisma.follows.findMany({
         where: {
             followed_by_id: authorizedUser.user.id,

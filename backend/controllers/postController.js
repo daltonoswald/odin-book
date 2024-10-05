@@ -44,7 +44,6 @@ exports.findPosts = asyncHandler(async (req, res, next) => {
             updated_at: 'desc'
         }
     })
-    console.log(`findPosts: `, findPosts);
     res.json({ posts: findPosts, user: authorizedUser.user });
 })
 
@@ -73,10 +72,60 @@ exports.new_post = [
                     }
                 });
                 res.json({ message: 'New post created', newPost: newPost });
-                console.log(newPost)
             }
         } catch (err) {
             return next(err);
         }
     }
 ]
+
+exports.like_post = asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    const token = req.headers.authorization.split(' ')[1];
+    const authorizedUser = verifyToken(token);
+    const postToLike = req.body.postToLike
+    
+    const alreadyLiked = await prisma.postLike.findMany({
+        where: {
+            userId: authorizedUser.user.id,
+            postId: postToLike,
+        }
+    })
+    if (alreadyLiked.length === 0) {
+        const postLike = await prisma.postLike.create({
+            data: {
+                userId: authorizedUser.user.id,
+                postId: postToLike,
+            }
+        })
+        res.json({ message: `You have liked post ${postToLike}` });
+    } else {
+        res.json({ message: `You have already liked this post.`})
+    }
+})
+
+exports.unlike_post = asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    const token = req.headers.authorization.split(' ')[1];
+    const authorizedUser = verifyToken(token);
+    const postToUnlike = req.body.postToUnlike
+
+    const likedPost = await prisma.postLike.findMany({
+        where: {
+            userId: authorizedUser.user.id,
+            postId: postToUnlike,
+        }
+    })
+
+    if (likedPost.length === 0) {
+        res.json({ message: `You have not liked this post`})
+        return
+    } else {
+        const postUnlike = await prisma.postLike.delete({
+            where: {
+                id: likedPost[0].id
+            }
+        })
+        res.json({ message: `You have unliked post ${postToUnlike}` });
+    }
+    })

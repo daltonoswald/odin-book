@@ -42,7 +42,57 @@ const Homepage = () => {
 
     const handleLikePost = async (event) => {
         event.preventDefault();
-        console.log('liked post')
+        const url = `http://localhost:3000/post/like-post`;
+        const postToLike = {
+            postToLike: event.target.id
+        }
+        console.log(postToLike);
+        try {
+            const token = localStorage.getItem('authenticationToken');
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify(postToLike),
+                mode: "cors",
+            });
+            const data = await response.json();
+            if (response.ok) {
+                window.location.reload();
+                // console.log(data);
+            }
+        } catch (error) {
+            console.error(`Error requesting:`, error);
+        }
+    }
+    const handleUnlikePost = async (event) => {
+        event.preventDefault();
+        const url = `http://localhost:3000/post/unlike-post`;
+        const postToUnlike = {
+            postToUnlike: event.target.id
+        }
+        console.log(postToUnlike);
+        try {
+            const token = localStorage.getItem('authenticationToken');
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify(postToUnlike),
+                mode: "cors",
+            });
+            const data = await response.json();
+            if (response.ok) {
+                window.location.reload();
+                // console.log(data);
+            }
+        } catch (error) {
+            console.error(`Error requesting:`, error);
+        }
     }
 
     return (
@@ -59,10 +109,12 @@ const Homepage = () => {
                                     <p className='post-username'>{post.user.username}</p>
                                     <p className='post-date'>{format(post.created_at, 'EEEE, MMMM dd, yyyy')}</p>
                                 </div>
-                                <div className='post-content'>{post.content}</div>
+                                {/* <div className='post-content'>{post.content}</div> */}
+                                <div className='post-content' dangerouslySetInnerHTML={{ __html: `${post.content}`}}></div>
                                 <div className='post-interactions'>
                                     <div className='post-likes'>{post.likes.length} likes</div>
-                                    <button onClick={handleLikePost}>Like</button>
+                                    <button onClick={handleLikePost} id={post.id}>Like</button>
+                                    <button onClick={handleUnlikePost} id={post.id}>Unlike</button>
                                     <form onSubmit={handleNewComment} className='new-comment-form'>
                                         <input 
                                             type='text'
