@@ -20,8 +20,8 @@ model User {
   username      String        @unique
   password      String
   bio           String?
-  followed_by   Follows[]     @relation("followed_by")
-  following     Follows[]     @relation("following")
+  followed_by   Follows[]     @relation("following")
+  following     Follows[]     @relation("followed_by")
   posts         Post[]
   post_likes    PostLike[]
   comments      Comment[]

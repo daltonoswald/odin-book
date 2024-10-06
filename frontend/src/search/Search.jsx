@@ -7,6 +7,7 @@ import './search.styles.css'
 const Search = () => {
     const [token, setToken] = useState(localStorage.getItem('authenticationToken'))
     const [searchResults, setSearchResults] = useState(null);
+    const [user, setUser] = useState();
     const navigate = useNavigate();
 
     const handleSearch = async (event) => {
@@ -30,8 +31,9 @@ const Search = () => {
             const data = await response.json();
 
             if (response.ok) {
-                console.log(data.users);
-                setSearchResults(data.users);
+                console.log(data.userList);
+                setUser(data.user);
+                setSearchResults(data.userList);
             }
         } catch (error) {
             console.error(`Error requesting:`, error);
@@ -65,6 +67,11 @@ const Search = () => {
         }
     }
 
+    const handleUnfollow = async (event) => {
+        event.preventDefault();
+        console.log('unfollowed');
+    }
+
     return (
         <>
         <Nav />
@@ -94,7 +101,12 @@ const Search = () => {
                     {searchResults.map((searchResult) => (
                         <div className='user' key={searchResult.id} id={searchResult.id}>
                             <p>{searchResult.username}</p>
-                            <button className='follow-button' onClick={handleFollow} id={searchResult.id}>Follow</button>
+                            {(searchResult.followed_by.length > 0) && (
+                                <button className='follow-button' onClick={handleUnfollow} id={searchResult.id}>Unfollow</button>
+                            )}
+                            {(searchResult.followed_by.length < 1) && (
+                                <button className='follow-button' onClick={handleFollow} id={searchResult.id}>Follow</button>
+                            )}
                         </div>
                     ))}
                     </>

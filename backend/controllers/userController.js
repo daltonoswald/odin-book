@@ -180,7 +180,9 @@ exports.sign_up = [
 exports.find_users = asyncHandler( async (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
     const authorizedUser = verifyToken(token);
-    const users = await prisma.user.findMany({
+    const authorizedUserId = authorizedUser.user.id
+    console.log(authorizedUserId);
+    const userList = await prisma.user.findMany({
         // where: {
         //     username: {
         //         contains: req.body.username
@@ -205,12 +207,21 @@ exports.find_users = asyncHandler( async (req, res, next) => {
         select: {
             id: true,
             username: true,
+            // followed_by: true,
+            followed_by: {
+                where: {
+                    followed_by_id: {
+                        // equals: "9d9264cd-b39d-4801-a791-d1033855b4af"
+                        equals: authorizedUserId
+                    }
+                },
+            }
         }
     });
-    if (!users) {
+    if (!userList) {
         res.status(401).json({ message: `No users found matching ${req.body.username}`});
     } else {
-        res.json({ users: users });
+        res.json({ userList: userList, user: authorizedUser.user });
     }
 
 })

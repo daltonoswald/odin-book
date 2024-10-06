@@ -109,7 +109,7 @@ const Homepage = () => {
                                     <p className='post-username'>{post.user.username}</p>
                                     <p className='post-date'>{format(post.created_at, 'EEEE, MMMM dd, yyyy')}</p>
                                 </div>
-                                {/* <div className='post-content'>{post.content}</div> */}
+                                {/* <div className='post-content'>{decodeURIComponent(post.content)}</div> */}
                                 <div className='post-content' dangerouslySetInnerHTML={{ __html: `${post.content}`}}></div>
                                 <div className='post-interactions'>
                                     <div className='post-likes'>{post.likes.length} likes</div>
