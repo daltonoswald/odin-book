@@ -215,6 +215,9 @@ exports.find_users = asyncHandler( async (req, res, next) => {
                         equals: authorizedUserId
                     }
                 },
+            },
+            _count: {
+                select: { followed_by: true }
             }
         }
     });
@@ -252,6 +255,23 @@ exports.follow_user = asyncHandler(async (req, res, next) => {
     } else {
         res.json({ message: 'Already following'});
     }
+})
+
+exports.unfollow_user = asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    const token = req.headers.authorization.split(' ')[1];
+    const authorizedUser = verifyToken(token);
+    const userToUnfollow = req.body.userToUnfollow
+    console.log(userToUnfollow);
+
+    const unfollowUser = await prisma.follows.deleteMany({
+        where: {
+            followed_by_id: authorizedUser.user.id,
+            following_id: userToUnfollow
+        }
+    })
+    console.log(unfollowUser);
+    res.json({ message: 'User unfollowed'})
 })
 
 exports.testUser = async (req, res, next) => {

@@ -36,13 +36,20 @@ exports.findPosts = asyncHandler(async (req, res, next) => {
                     last_name: true,
                     username: true,
                     id: true,
+                },
+            },
+            likes: {
+                where: {
+                    userId: authorizedUserId
                 }
             },
-            likes: true,
+            _count: {
+                select: { likes: true },
+            }
         },
         orderBy: {
             updated_at: 'desc'
-        }
+        },
     })
     res.json({ posts: findPosts, user: authorizedUser.user });
 })

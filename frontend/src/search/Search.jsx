@@ -60,7 +60,7 @@ const Search = () => {
             });
             const data = await response.json();
             if (response.ok) {
-                console.log(data);
+                window.location.reload();
             }
         } catch (error) {
             console.error(`Error requesting:`, error);
@@ -69,7 +69,28 @@ const Search = () => {
 
     const handleUnfollow = async (event) => {
         event.preventDefault();
-        console.log('unfollowed');
+        const url = `http://localhost:3000/user/unfollow-user`;
+        const unfollowId = {
+            userToUnfollow: event.target.id
+        }
+        try {
+            const token = localStorage.getItem('authenticationToken');
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify(unfollowId),
+                mode: 'cors',
+            })
+            const data = await response.json();
+            if (response.ok) {
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error(`Error requesting:`, error)
+        }
     }
 
     return (
@@ -101,6 +122,7 @@ const Search = () => {
                     {searchResults.map((searchResult) => (
                         <div className='user' key={searchResult.id} id={searchResult.id}>
                             <p>{searchResult.username}</p>
+                            <p>{searchResult._count.followed_by} Followers</p>
                             {(searchResult.followed_by.length > 0) && (
                                 <button className='follow-button' onClick={handleUnfollow} id={searchResult.id}>Unfollow</button>
                             )}

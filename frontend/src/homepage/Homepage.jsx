@@ -109,12 +109,16 @@ const Homepage = () => {
                                     <p className='post-username'>{post.user.username}</p>
                                     <p className='post-date'>{format(post.created_at, 'EEEE, MMMM dd, yyyy')}</p>
                                 </div>
-                                {/* <div className='post-content'>{decodeURIComponent(post.content)}</div> */}
-                                <div className='post-content' dangerouslySetInnerHTML={{ __html: `${post.content}`}}></div>
+                                {/* <div className='post-content'>{post.content}</div> */}
+                                <div className='post-content' dangerouslySetInnerHTML={{ __html: post.content} }></div>
                                 <div className='post-interactions'>
-                                    <div className='post-likes'>{post.likes.length} likes</div>
-                                    <button onClick={handleLikePost} id={post.id}>Like</button>
-                                    <button onClick={handleUnlikePost} id={post.id}>Unlike</button>
+                                    {(post.likes.length > 0) && (
+                                        <button onClick={handleUnlikePost} id={post.id}>Unlike</button>
+                                    )}
+                                    {(post.likes.length === 0) && (
+                                        <button onClick={handleLikePost} id={post.id}>Like</button>
+                                    )}
+                                    <p>{post._count.likes} Likes</p>
                                     <form onSubmit={handleNewComment} className='new-comment-form'>
                                         <input 
                                             type='text'
