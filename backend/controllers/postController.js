@@ -38,6 +38,29 @@ exports.findPosts = asyncHandler(async (req, res, next) => {
                     id: true,
                 },
             },
+            comments: {
+                select: {
+                    id: true,
+                    user: {
+                        select: {
+                            first_name: true,
+                            last_name: true,
+                            username: true,
+                            id: true,  
+                        }
+                    },
+                    content: true,
+                    likes: {
+                        where: {
+                            userId: authorizedUserId
+                        }
+                    },
+                    created_at: true,
+                    _count: {
+                        select: { likes: true },
+                    }
+                },
+            },
             likes: {
                 where: {
                     userId: authorizedUserId
@@ -79,6 +102,40 @@ exports.new_post = [
                     }
                 });
                 res.json({ message: 'New post created', newPost: newPost });
+            }
+        } catch (err) {
+            return next(err);
+        }
+    }
+]
+
+exports.new_comment = [
+    body('content', 'The post must be between 1 and 250 characters.')
+        .trim()
+        .isLength({ min: 1, max: 250 })
+        .escape(),
+
+    async (req, res, next) => {
+        try {
+            const errors = validationResult(req);
+            const token = req.headers.authorization.split(' ')[1];
+            const authorizedUser = verifyToken(token);
+            const tokenUserId = authorizedUser.user.id;
+
+            if (!errors.isEmpty()) {
+                const errorsMessages = errors.array().map((error) => error.msg);
+                res.json({ error: errorsMessages})
+            } else {
+                const content = req.body.content;
+                const postId = req.body.postId;
+                const newComment = await prisma.comment.create({
+                    data: {
+                        content: content,
+                        postId: postId,
+                        userId: tokenUserId
+                    }
+                });
+                res.json({ message: 'New comment created', newComment: newComment });
             }
         } catch (err) {
             return next(err);
@@ -135,4 +192,57 @@ exports.unlike_post = asyncHandler(async (req, res, next) => {
         })
         res.json({ message: `You have unliked post ${postToUnlike}` });
     }
+})
+
+    exports.like_comment = asyncHandler(async (req, res, next) => {
+        const errors = validationResult(req);
+        const token = req.headers.authorization.split(' ')[1];
+        const authorizedUser = verifyToken(token);
+        const commentToLike = req.body.commentToLike
+        console.log(req.body);
+        
+        const alreadyLiked = await prisma.commentLike.findMany({
+            where: {
+                userId: authorizedUser.user.id,
+                commentId: commentToLike,
+            }
+        })
+        console.log('alreadyLiked', alreadyLiked);
+        if (alreadyLiked.length === 0) {
+            const commentLike = await prisma.commentLike.create({
+                data: {
+                    userId: authorizedUser.user.id,
+                    commentId: commentToLike,
+                }
+            })
+            res.json({ message: `You have liked comment ${commentToLike}` });
+        } else {
+            res.json({ message: `You have already liked this comment.`})
+        }
+    })
+
+    exports.unlike_comment = asyncHandler(async (req, res, next) => {
+        const errors = validationResult(req);
+        const token = req.headers.authorization.split(' ')[1];
+        const authorizedUser = verifyToken(token);
+        const commentToUnlike = req.body.commentToUnlike
+    
+        const likedComment = await prisma.commentLike.findMany({
+            where: {
+                userId: authorizedUser.user.id,
+                commentId: commentToUnlike,
+            }
+        })
+    
+        if (likedComment.length === 0) {
+            res.json({ message: `You have not liked this comment`})
+            return
+        } else {
+            const commentUnlike = await prisma.commentLike.delete({
+                where: {
+                    id: likedComment[0].id
+                }
+            })
+            res.json({ message: `You have unliked comment ${commentToUnlike}` });
+        }
     })
