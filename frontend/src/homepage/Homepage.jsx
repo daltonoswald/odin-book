@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Nav from '../nav/Nav';
 import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
-import { handleLikePost, handleUnlikePost, handleLikeComment, handleUnlikeComment } from '../utils/postUtils'
+import { handleLikePost, handleUnlikePost, handleLikeComment, handleUnlikeComment, handleDeletePost, handleDeleteComment } from '../utils/postUtils'
 import './homepage.styles.css';
 
 const Homepage = () => {
@@ -81,11 +81,11 @@ const Homepage = () => {
                                     <p className='post-username'>{post.user.username}</p>
                                     <p className='post-date'>{format(post.created_at, 'EEEE, MMMM dd, yyyy')}</p>
                                     {(post.userId === me.id) && (
-                                        <button>Delete</button>
+                                        <button onClick={handleDeletePost}>Delete</button>
                                     )}
                                 </div>
-                                <div className='post-content'>{post.content}</div>
-                                {/* <div className='post-content' dangerouslySetInnerHTML={{ __html: post.content} }></div> */}
+                                {/* <div className='post-content'>{post.content}</div> */}
+                                <div className='post-content' dangerouslySetInnerHTML={{ __html: post.content} }></div>
                                 <div className='post-interactions'>
                                     {(post.likes.length > 0) && (
                                         <button onClick={handleUnlikePost} id={post.id}>Unlike</button>
@@ -101,11 +101,11 @@ const Homepage = () => {
                                                 <p className='comment-username'>{comment.user.username}</p>
                                                 <p className='comment-date'>{format(comment.created_at, 'EEEE, MMMM dd, yyyy')}</p>
                                                 {(comment.user.id === me.id) && (
-                                                    <button>Delete</button>
+                                                    <button onClick={handleDeleteComment}>Delete</button>
                                                 )}
                                             </div>
-                                            <div className='comment-content'>{comment.content}</div>
-                                            {/* <div className='comment-content' dangerouslySetInnerHTML={{ __html: comment.content} }></div> */}
+                                            {/* <div className='comment-content'>{comment.content}</div> */}
+                                            <div className='comment-content' dangerouslySetInnerHTML={{ __html: comment.content} }></div>
                                             <div className='comment-interactions'>
                                                 {(comment.likes.length > 0) && (
                                                     <button onClick={handleUnlikeComment} id={comment.id}>Unlike</button>

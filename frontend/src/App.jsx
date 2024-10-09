@@ -1,5 +1,5 @@
 import LogIn from './login/LogIn'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SignUp from './signup/SignUp';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,6 +7,12 @@ const App = () => {
     const navigate = useNavigate();
     const [openLogIn, setOpenLogIn] = useState(false);
     const [openSignUp, setOpenSignUp] = useState(false);
+
+    useEffect(() => {
+        if (localStorage.getItem('authenticationToken')) {
+            navigate('/home');
+        }
+    })
 
     const handleOpenLogIn = () => {
         if (!openLogIn) {

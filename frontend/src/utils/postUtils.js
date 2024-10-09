@@ -123,4 +123,54 @@ const handleUnlikeComment = async (event) => {
     }
 }
 
-export { handleNewPost, handleLikePost, handleUnlikePost, handleLikeComment, handleUnlikeComment }
+const handleDeletePost = async (event) => {
+    event.preventDefault();
+    const url = `http://localhost:3000/post/delete-post`
+    const postToDelete = {
+        postToDelete: event.target.parentNode.parentNode.id
+    }
+    try {
+        const token = localStorage.getItem('authenticationToken');
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(postToDelete),
+            mode: 'cors',
+        });
+        if (response.ok) {
+            window.location.reload();
+        }
+    } catch (error) {
+        console.error(`Error requesting: `, error);
+    }
+}
+
+const handleDeleteComment = async (event) => {
+    event.preventDefault();
+    const url = `http://localhost:3000/post/delete-comment`
+    const commentToDelete = {
+        commentToDelete: event.target.parentNode.parentNode.id
+    }
+    try {
+        const token = localStorage.getItem('authenticationToken');
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(commentToDelete),
+            mode: 'cors',
+        });
+        if (response.ok) {
+            window.location.reload();
+        }
+    } catch (error) {
+        console.error(`Error requesting: `, error);
+    }
+}
+
+export { handleNewPost, handleLikePost, handleUnlikePost, handleLikeComment, handleUnlikeComment, handleDeletePost, handleDeleteComment }

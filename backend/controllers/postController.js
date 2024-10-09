@@ -246,3 +246,41 @@ exports.unlike_post = asyncHandler(async (req, res, next) => {
             res.json({ message: `You have unliked comment ${commentToUnlike}` });
         }
     })
+
+    exports.delete_post = asyncHandler(async (req, res, next) => {
+        const errors = validationResult(req);
+        const token = req.headers.authorization.split(' ')[1];
+        const authorizedUser = verifyToken(token);
+
+        try {
+            const postToDelete = await prisma.post.delete({
+                where: {
+                    id: req.body.postToDelete,
+                    userId: authorizedUser.user.id
+                }
+            })
+            res.status(202).json({ message: 'Post deleted' })
+        } catch (err) {
+            console.error(err);
+            res.json({ error: err });
+        }
+    })
+
+    exports.delete_comment = asyncHandler(async (req, res, next) => {
+        const errors = validationResult(req);
+        const token = req.headers.authorization.split(' ')[1];
+        const authorizedUser = verifyToken(token);
+
+        try {
+            const commentToDelete = await prisma.comment.delete({
+                where: {
+                    id: req.body.commentToDelete,
+                    userId: authorizedUser.user.id
+                }
+            })
+            res.status(202).json({ message: 'comment deleted' })
+        } catch (err) {
+            console.error(err);
+            res.json({ error: err });
+        }
+    })

@@ -98,7 +98,7 @@ export default function SignUp({openSignUp, setOpenSignUp}) {
                         required />
                     <button className="submit-button" type='submit'>Sign Up</button>
                 </form>
-                <p>Don&apos;t have an account? Sign up</p>
+                <p>Already have an account? Log in</p>
             </div>
         </>
     )
