@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Nav from '../nav/Nav';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import { handleLikePost, handleUnlikePost, handleLikeComment, handleUnlikeComment, handleDeletePost, handleDeleteComment } from '../utils/postUtils'
 import './homepage.styles.css';
@@ -78,7 +78,11 @@ const Homepage = () => {
                             <div className='post' key={post.id} id={post.id}>
                                 <div className='post-info'>
                                     <p className='post-name'>{post.user.first_name} {post.user.last_name}</p>
-                                    <p className='post-username'>{post.user.username}</p>
+                                    {/* <p className='post-username'>{post.user.username}</p> */}
+                                    <Link 
+                                        to={`/profile/${post.user.username}`}
+                                        key={post.user.id}
+                                        >{post.user.username}</Link>
                                     <p className='post-date'>{format(post.created_at, 'EEEE, MMMM dd, yyyy')}</p>
                                     {(post.userId === me.id) && (
                                         <button onClick={handleDeletePost}>Delete</button>
@@ -98,7 +102,11 @@ const Homepage = () => {
                                         <div className='comment' key={comment.id} id={comment.id}>
                                             <div className='comment-info'>
                                                 <p className='comment-name'>{comment.user.first_name} {comment.user.last_name}</p>
-                                                <p className='comment-username'>{comment.user.username}</p>
+                                                {/* <p className='comment-username'>{comment.user.username}</p> */}
+                                                <Link
+                                                    to={`/profile/${comment.user.username}`}
+                                                    key={comment.user.id}
+                                                    >{comment.user.username}</Link>
                                                 <p className='comment-date'>{format(comment.created_at, 'EEEE, MMMM dd, yyyy')}</p>
                                                 {(comment.user.id === me.id) && (
                                                     <button onClick={handleDeleteComment}>Delete</button>

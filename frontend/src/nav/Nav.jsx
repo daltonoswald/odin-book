@@ -31,7 +31,7 @@ export default function Nav() {
                 <button onClick={handleNewPost}>New Post</button>          
             </div>
             <div className="nav-bottom">
-                <Link to='profile'>{localStorage.getItem('username')}</Link>
+                <Link to={`/profile/${localStorage.getItem('username')}`}>{localStorage.getItem('username')}</Link>
                 <button onClick={logout}>Logout</button>
             </div>
         </div>

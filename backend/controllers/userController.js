@@ -277,3 +277,39 @@ exports.unfollow_user = asyncHandler(async (req, res, next) => {
 exports.testUser = async (req, res, next) => {
     console.log(`testUser`, req.user);
 }
+
+exports.profile = asyncHandler(async (req, res, next) => {
+    const token = req.headers.authorization.split(' ')[1];
+    const authorizedUser = verifyToken(token);
+    const userToFind = req.body.userToFind;
+    const userProfile = await prisma.user.findFirst({
+        where: {
+            username: userToFind
+        },
+        select: {
+            first_name: true,
+            last_name: true,
+            username: true,
+            bio: true,
+            followed_by: {
+                where: {
+                    followed_by_id: {
+                        // equals: "9d9264cd-b39d-4801-a791-d1033855b4af"
+                        equals: authorizedUser.user.id
+                    }
+                },
+            },
+            _count: {
+                select: { followed_by: true, following: true }
+            },
+            posts: {
+                select: {
+                    content: true,
+                    userId: true,
+                    created_at: true,
+                }
+            }
+        }
+    })
+    res.json({ profile: userProfile, user: authorizedUser });
+})

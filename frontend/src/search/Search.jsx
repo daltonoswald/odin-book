@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-key */
 import { useEffect, useState } from 'react';
 import Nav from '../nav/Nav';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './search.styles.css'
 
 const Search = () => {
@@ -121,7 +121,12 @@ const Search = () => {
                     <>
                     {searchResults.map((searchResult) => (
                         <div className='user' key={searchResult.id} id={searchResult.id}>
-                            <p>{searchResult.username}</p>
+                            {/* <p>{searchResult.username}</p> */}
+                            <Link
+                                to={`/profile/${searchResult.username}`}
+                                key={searchResult.id}
+                                // state={{ searchResult }}
+                                >{searchResult.username}</Link>
                             <p>{searchResult._count.followed_by} Followers</p>
                             {(searchResult.followed_by.length > 0) && (
                                 <button className='follow-button' onClick={handleUnfollow} id={searchResult.id}>Unfollow</button>
