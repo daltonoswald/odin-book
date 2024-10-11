@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Nav from '../nav/Nav';
 import { useNavigate, Link } from 'react-router-dom';
 import { format } from 'date-fns';
-import { handleLikePost, handleUnlikePost, handleLikeComment, handleUnlikeComment, handleDeletePost, handleDeleteComment } from '../utils/postUtils'
+import { handleLikePost, handleUnlikePost, handleLikeComment, handleUnlikeComment, handleDeletePost, handleDeleteComment, handleNewComment } from '../utils/postUtils'
 import './homepage.styles.css';
 
 const Homepage = () => {
@@ -38,34 +38,6 @@ const Homepage = () => {
         }
         getPosts();
     }, [token])
-
-    const handleNewComment = async (event) => {
-        event.preventDefault();
-        const url = `http://localhost:3000/post/new-comment`
-        const commentData = {
-            content: event.target.content.value,
-            postId: event.target.parentNode.parentNode.id
-        }
-        try {
-            const token = localStorage.getItem('authenticationToken');
-            const response = await fetch(url, 
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`
-                    },
-                    body: JSON.stringify(commentData)
-                })
-                const data = await response.json();
-                if (response.ok) {
-                    console.log(data);
-                    window.location.reload();
-                }
-        } catch (error) {
-            console.error('Error requesting:', error);
-        }
-    }
 
     return (
         <>

@@ -83,7 +83,6 @@ exports.log_in = asyncHandler(async (req, res, next) => {
             if (!isMatch) {
                 res.status(401).json({ message: "Password is incorrect." });
             } else {
-                console.log(user.username);
                 res.json({ message: 'User logged in successfully', token, user });
             }
         })
@@ -124,7 +123,6 @@ exports.sign_up = [
         .trim()
         .custom((value, { req }) => {
             if (value !== req.body.password) {
-                console.log(value, req.body.password);
                 return false
             }
             return true
@@ -134,7 +132,6 @@ exports.sign_up = [
         .escape(),
 
     async(req, res, next) => {
-        console.log(`line 40`, req.body);
         try {
             const errors = validationResult(req);
             if (req.body.password !== req.body.confirm_password) {
@@ -157,7 +154,6 @@ exports.sign_up = [
                     res.status(409).json({ message: "Username is already in use."})
                     return;
                 } else {
-                    console.log(req.body.first_name);
                     await prisma.user.create({
                         data: {
                             first_name: req.body.first_name,
@@ -181,7 +177,6 @@ exports.find_users = asyncHandler( async (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
     const authorizedUser = verifyToken(token);
     const authorizedUserId = authorizedUser.user.id
-    console.log(authorizedUserId);
     const userList = await prisma.user.findMany({
         // where: {
         //     username: {
@@ -234,7 +229,6 @@ exports.follow_user = asyncHandler(async (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
     const authorizedUser = verifyToken(token);
     const userToFollow = req.body.userToFollow
-    console.log(userToFollow);
 
     const findExisting = await prisma.follows.findMany({
         where: {
@@ -242,7 +236,6 @@ exports.follow_user = asyncHandler(async (req, res, next) => {
             following_id: userToFollow
         }
     })
-    console.log(`findExisting: `, findExisting)
 
     if (findExisting.length === 0) {
         const follow = await prisma.follows.create({
@@ -262,7 +255,6 @@ exports.unfollow_user = asyncHandler(async (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
     const authorizedUser = verifyToken(token);
     const userToUnfollow = req.body.userToUnfollow
-    console.log(userToUnfollow);
 
     const unfollowUser = await prisma.follows.deleteMany({
         where: {
@@ -270,7 +262,6 @@ exports.unfollow_user = asyncHandler(async (req, res, next) => {
             following_id: userToUnfollow
         }
     })
-    console.log(unfollowUser);
     res.json({ message: 'User unfollowed'})
 })
 
@@ -287,6 +278,7 @@ exports.profile = asyncHandler(async (req, res, next) => {
             username: userToFind
         },
         select: {
+            id: true,
             first_name: true,
             last_name: true,
             username: true,
@@ -304,10 +296,53 @@ exports.profile = asyncHandler(async (req, res, next) => {
             },
             posts: {
                 select: {
+                    id: true,
                     content: true,
-                    userId: true,
+                    // userId: true,
+                    user: {
+                        select: {
+                            first_name: true,
+                            last_name: true,
+                            username: true,
+                            id: true,
+                        },
+                    },
+                    likes: {
+                        where: {
+                            userId: authorizedUser.user.id
+                        }
+                    },
+                    _count: {
+                        select: { likes: true },
+                    },
                     created_at: true,
-                }
+                    comments: {
+                        select: {
+                            id: true,
+                            user: {
+                                select: {
+                                    first_name: true,
+                                    last_name: true,
+                                    username: true,
+                                    id: true,  
+                                }
+                            },
+                            content: true,
+                            likes: {
+                                where: {
+                                    userId: authorizedUser.user.id
+                                }
+                            },
+                            created_at: true,
+                            _count: {
+                                select: { likes: true },
+                            }
+                        },
+                    },
+                },
+                orderBy: {
+                    updated_at: 'desc'
+                },
             }
         }
     })

@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import Nav from '../nav/Nav';
 import { Link, useNavigate } from 'react-router-dom';
+import { handleFollow, handleUnfollow } from '../utils/postUtils'
 import './search.styles.css'
 
 const Search = () => {
@@ -37,59 +38,6 @@ const Search = () => {
             }
         } catch (error) {
             console.error(`Error requesting:`, error);
-        }
-    }
-
-    const handleFollow = async (event) => {
-        event.preventDefault();
-        const url = `http://localhost:3000/user/follow-user`;
-        const followId = {
-            userToFollow: event.target.id
-        }
-        console.log(followId);
-        try {
-            const token = localStorage.getItem('authenticationToken');
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`
-                },
-                body: JSON.stringify(followId),
-                mode: "cors",
-            });
-            const data = await response.json();
-            if (response.ok) {
-                window.location.reload();
-            }
-        } catch (error) {
-            console.error(`Error requesting:`, error);
-        }
-    }
-
-    const handleUnfollow = async (event) => {
-        event.preventDefault();
-        const url = `http://localhost:3000/user/unfollow-user`;
-        const unfollowId = {
-            userToUnfollow: event.target.id
-        }
-        try {
-            const token = localStorage.getItem('authenticationToken');
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`
-                },
-                body: JSON.stringify(unfollowId),
-                mode: 'cors',
-            })
-            const data = await response.json();
-            if (response.ok) {
-                window.location.reload();
-            }
-        } catch (error) {
-            console.error(`Error requesting:`, error)
         }
     }
 
