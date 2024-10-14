@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react';
 import Nav from '../nav/Nav';
 import { useNavigate, Link } from 'react-router-dom';
 import { format } from 'date-fns';
-import { handleLikePost, handleUnlikePost, handleLikeComment, handleUnlikeComment, handleDeletePost, handleDeleteComment, handleNewComment } from '../utils/postUtils'
+import { handleNewPost, handleLikePost, handleUnlikePost, 
+            handleLikeComment, handleUnlikeComment, handleDeletePost,
+            handleDeleteComment, handleNewComment } from '../utils/postUtils'
 import './homepage.styles.css';
 
 const Homepage = () => {
@@ -16,6 +18,9 @@ const Homepage = () => {
         const getPosts = async () => {
             const url = `http://localhost:3000/post/find-posts`;
             const token = localStorage.getItem('authenticationToken');
+            if (!token) {
+                navigate('/');
+            }
             try {
                 const response = await fetch(url, {
                     method: "POST",
@@ -43,57 +48,80 @@ const Homepage = () => {
         <>
         <Nav />
         <div className='content'>
+            <div className='homepage-new-post'>
+                <form onSubmit={handleNewPost} className="new-post-form">
+                    <input  
+                        type='text'
+                        id='content'
+                        name='content'
+                        placeholder='What is happening?'
+                        required />
+                    <button className="submit-button" type='submit'>Post</button>
+                </form>
+            </div>
             <div className='post-feed'>
                 {(posts.length > 0 && !isLoading) && (
                     <>
                         {posts.map((post) => (
                             <div className='post' key={post.id} id={post.id}>
                                 <div className='post-info'>
-                                    <p className='post-name'>{post.user.first_name} {post.user.last_name}</p>
-                                    {/* <p className='post-username'>{post.user.username}</p> */}
-                                    <Link 
-                                        to={`/profile/${post.user.username}`}
-                                        key={post.user.id}
-                                        >{post.user.username}</Link>
+                                    <div className='post-names'>
+                                        <p className='post-name'>{post.user.first_name} {post.user.last_name}</p>
+                                        {/* <p className='post-username'>{post.user.username}</p> */}
+                                        <Link 
+                                            to={`/profile/${post.user.username}`}
+                                            key={post.user.id}
+                                            >{post.user.username}</Link>
+                                    </div>
+                                    <div className='post-info-right'>
                                     <p className='post-date'>{format(post.created_at, 'EEEE, MMMM dd, yyyy')}</p>
-                                    {(post.userId === me.id) && (
-                                        <button onClick={handleDeletePost}>Delete</button>
-                                    )}
+                                        {(post.userId === me.id) && (
+                                            <button onClick={handleDeletePost}>Delete</button>
+                                        )}
+                                    </div>
                                 </div>
                                 {/* <div className='post-content'>{post.content}</div> */}
                                 <div className='post-content' dangerouslySetInnerHTML={{ __html: post.content} }></div>
                                 <div className='post-interactions'>
-                                    {(post.likes.length > 0) && (
-                                        <button onClick={handleUnlikePost} id={post.id}>Unlike</button>
-                                    )}
-                                    {(post.likes.length === 0) && (
-                                        <button onClick={handleLikePost} id={post.id}>Like</button>
-                                    )}
-                                    <p>{post._count.likes} Likes</p>
+                                    <div className='post-likes'>
+                                        {(post.likes.length > 0) && (
+                                            <button onClick={handleUnlikePost} id={post.id}>Unlike</button>
+                                        )}
+                                        {(post.likes.length === 0) && (
+                                            <button onClick={handleLikePost} id={post.id}>Like</button>
+                                        )}
+                                        <p>{post._count.likes} Likes</p>
+                                    </div>
                                     {post.comments.map((comment) => (
                                         <div className='comment' key={comment.id} id={comment.id}>
                                             <div className='comment-info'>
-                                                <p className='comment-name'>{comment.user.first_name} {comment.user.last_name}</p>
-                                                {/* <p className='comment-username'>{comment.user.username}</p> */}
-                                                <Link
-                                                    to={`/profile/${comment.user.username}`}
-                                                    key={comment.user.id}
-                                                    >{comment.user.username}</Link>
-                                                <p className='comment-date'>{format(comment.created_at, 'EEEE, MMMM dd, yyyy')}</p>
-                                                {(comment.user.id === me.id) && (
-                                                    <button onClick={handleDeleteComment}>Delete</button>
-                                                )}
+                                                <div className='comment-names'>
+                                                    <p className='comment-name'>{comment.user.first_name} {comment.user.last_name}</p>
+                                                    {/* <p className='comment-username'>{comment.user.username}</p> */}
+                                                    <Link
+                                                        to={`/profile/${comment.user.username}`}
+                                                        key={comment.user.id}
+                                                        >{comment.user.username}</Link>
+                                                </div>
+                                                <div className='comment-info-right'>
+                                                    <p className='comment-date'>{format(comment.created_at, 'EEEE, MMMM dd, yyyy')}</p>
+                                                    {(comment.user.id === me.id) && (
+                                                        <button onClick={handleDeleteComment}>Delete</button>
+                                                    )}
+                                                </div>
                                             </div>
                                             {/* <div className='comment-content'>{comment.content}</div> */}
                                             <div className='comment-content' dangerouslySetInnerHTML={{ __html: comment.content} }></div>
                                             <div className='comment-interactions'>
-                                                {(comment.likes.length > 0) && (
-                                                    <button onClick={handleUnlikeComment} id={comment.id}>Unlike</button>
-                                                )}
-                                                {(comment.likes.length === 0) && (
-                                                    <button onClick={handleLikeComment} id={comment.id}>Like</button>
-                                                )}
-                                                <p>{comment._count.likes} Likes</p>
+                                                <div className='comment-likes'>
+                                                    {(comment.likes.length > 0) && (
+                                                        <button onClick={handleUnlikeComment} id={comment.id}>Unlike</button>
+                                                    )}
+                                                    {(comment.likes.length === 0) && (
+                                                        <button onClick={handleLikeComment} id={comment.id}>Like</button>
+                                                    )}
+                                                    <p>{comment._count.likes} Likes</p>
+                                                </div>
                                             </div>
                                         </div>
                                     ))}

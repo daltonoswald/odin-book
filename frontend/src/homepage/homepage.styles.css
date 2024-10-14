@@ -1,7 +1,72 @@
+/* .post-feed {
+
+} */
+
+.homepage-new-post {
+    padding: 0 20px 20px 20px;
+}
+
+.new-post-form {
+    display: flex;
+    width: 100%;
+}
+
+.new-post-form > input {
+    width: 100%;
+}
+
+.post:first-child {
+    border-top: 1px solid rgb(90, 90, 90);
+}
+
 .post {
-    border: 3px solid black;
+    border-bottom: 1px solid rgb(90, 90, 90);
+    padding: 20px;
+}
+
+.post-info,
+.comment-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.post-name,
+.comment-name,
+.post-date,
+.comment-date {
+    margin: 0;
+}
+
+.post-info-right,
+.comment-info-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.post-likes,
+.comment-likes {
+    display: flex;
+    align-items: center;
+    gap: 1em;
 }
 
 .comment {
-    border: 3px solid red;
+    margin: 0 30px;
+    padding-left: 1em;
+    border-left: 1px solid rgb(90, 90, 90);
+    border-bottom: 1px solid rgb(90, 90, 90);
+}
+
+.comment-name {
+    margin: 0;
+}
+
+.new-comment-form {
+    padding-top: 1em;
+}
+
+.new-comment-form > input {
+    width: 90%;
 }

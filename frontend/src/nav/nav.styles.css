@@ -1,11 +1,10 @@
 .nav {
-    display: flex;
-    flex-direction: column;
     justify-content: space-between;
     font-size: 24px;
-    gap: 16px;
     width: 15vw;
     padding: 16px 0 16px;
+    height: 96vh;
+    position: sticky;
 }
 
 .nav,

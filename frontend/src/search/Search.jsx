@@ -11,6 +11,12 @@ const Search = () => {
     const [user, setUser] = useState();
     const navigate = useNavigate();
 
+    useEffect(() => {
+        if (!token) {
+            navigate('/');
+        }
+    }, [token])
+
     const handleSearch = async (event) => {
         event.preventDefault();
         const url = `http://localhost:3000/user/find-users`;
