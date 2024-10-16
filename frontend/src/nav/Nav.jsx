@@ -25,9 +25,9 @@ export default function Nav() {
         <>
         <div className='nav'>
             <div className='nav-top'>
-                <Link to='/home'>OdinBook</Link>
-                <Link to='/home'>Home</Link>
-                <Link to='/search'>Search</Link>
+                <Link to='/home' className="nav-title">OdinBook</Link>
+                <Link to='/home' className="nav-link">Home</Link>
+                <Link to='/search' className="nav-link">Search</Link>
                 <button onClick={handleNewPost}>New Post</button>          
             </div>
             <div className="nav-bottom">

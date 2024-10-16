@@ -65,7 +65,7 @@ export default function LogIn({openLogIn, setOpenLogIn}) {
                         required />
                     <button className="submit-button" type='submit'>Log in</button>
                 </form>
-                <p>Don&apos;t have an account? Sign up</p>
+                {/* <p>Don&apos;t have an account? Sign up</p> */}
             </div>
         </>
     )

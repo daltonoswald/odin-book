@@ -50,12 +50,18 @@ const Homepage = () => {
         <div className='content'>
             <div className='homepage-new-post'>
                 <form onSubmit={handleNewPost} className="new-post-form">
-                    <input  
+                    {/* <input  
                         type='text'
                         id='content'
                         name='content'
                         placeholder='What is happening?'
-                        required />
+                        required /> */}
+                        <textarea 
+                            id='content'
+                            name='content'
+                            placeholder='What is happening?'
+                            maxLength={250}
+                            required />
                     <button className="submit-button" type='submit'>Post</button>
                 </form>
             </div>

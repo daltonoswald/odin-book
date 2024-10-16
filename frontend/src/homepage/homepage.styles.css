@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto');
+
 /* .post-feed {
 
 } */
@@ -9,10 +11,17 @@
 .new-post-form {
     display: flex;
     width: 100%;
+    align-items: center;
 }
 
-.new-post-form > input {
+.new-post-form > textarea {
     width: 100%;
+    background-color: #F2F4F7;
+    margin: 4px;
+    height: 3em;
+    resize: none;
+    outline: none;
+    font-family: 'Roboto', sans-serif;
 }
 
 .post:first-child {
@@ -22,6 +31,7 @@
 .post {
     border-bottom: 1px solid rgb(90, 90, 90);
     padding: 20px;
+    background-color: #fdfeff;
 }
 
 .post-info,
@@ -54,6 +64,7 @@
 
 .comment {
     margin: 0 30px;
+    padding-top: 8px;
     padding-left: 1em;
     border-left: 1px solid rgb(90, 90, 90);
     border-bottom: 1px solid rgb(90, 90, 90);

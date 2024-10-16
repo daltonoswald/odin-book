@@ -8,11 +8,27 @@
 }
 
 .nav,
-.nav-top,
 .nav-bottom {
     display: flex;
     flex-direction: column;
     gap: 16px;
+}
+
+.nav-top {
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-title {
+    color: #0866FF !important;
+}
+
+.nav-top > a {
+    padding: 8px 0 8px 4px;
+}
+
+.nav-top > a:hover {
+    background-color: #dfe2e9;
 }
 
 .new-post-modal {

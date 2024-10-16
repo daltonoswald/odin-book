@@ -1,15 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto');
+
 body {
     margin: 0;
     height: 100vh;
-    background-color: #F5F5F5;
+    font-family: "Roboto", sans-serif;
+    background-color: #F2F4F7;
 }
 
 #root {
     height: 100%;
     width: 80vw;
     margin: 0 auto;
+    gap: 8px;
     display: flex;
     flex-direction: row;
+}
+
+a {
+    text-decoration: none;
+    font-weight: 700;
+}
+
+a:visited {
+    color: black;
+}
+
+a:hover {
+    text-decoration: underline;
 }
 
 .content {
@@ -22,4 +39,6 @@ body {
     -ms-overflow-styles: none;
     scrollbar-width: none;
     overflow-anchor: auto;
+
+    background-color: #fdfeff;
 }
