@@ -60,6 +60,15 @@
     display: flex;
     align-items: center;
     gap: 1em;
+    width: fit-content;
+    padding: .5em 1em;
+    border-radius: 8px;
+    margin: 4px;
+}
+
+.post-likes > p,
+.comment-likes > p {
+    margin: 0;
 }
 
 .comment {

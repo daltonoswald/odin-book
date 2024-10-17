@@ -1,9 +1,11 @@
 /* eslint-disable react/prop-types */
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './signup.styles.css';
 
-export default function SignUp({openSignUp, setOpenSignUp}) {
+export default function SignUp({openSignUp, setOpenSignUp, setOpenLogIn}) {
     const navigate = useNavigate();
+    const [message, setMessage] = useState();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -17,7 +19,6 @@ export default function SignUp({openSignUp, setOpenSignUp}) {
             confirm_password: event.target.confirm_password.value,
             bio: event.target.bio.value,
         };
-        console.log(formData)
         try {
             const response = await fetch(url, {
                 method: "POST",
@@ -28,17 +29,13 @@ export default function SignUp({openSignUp, setOpenSignUp}) {
                 mode: "cors",
             });
             const data = await response.json();
-            // console.log(`formData `, formData);
-            // console.log(`data `, data);
-            // console.log(`response `, response);
 
             if (response.ok) {
-                console.log(response)
-                console.log(data);
-                navigate('/');
+                setOpenSignUp(false);
+                setOpenLogIn(true)
             } else {
                 console.error("Error requesting authentication:", data.message);
-                // setMessage(data.message)
+                setMessage(data.message)
             }
         } catch (error) {
             console.error('Error requesting authentication:', error);
@@ -99,6 +96,9 @@ export default function SignUp({openSignUp, setOpenSignUp}) {
                     <button className="submit-button" type='submit'>Sign Up</button>
                 </form>
                 {/* <p>Already have an account? Log in</p> */}
+                {message && (
+                    <p className="error-message">{message}</p>
+                )}
             </div>
         </>
     )

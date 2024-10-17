@@ -7,7 +7,6 @@ export default function NewPost({openNewPost, setOpenNewPost}) {
     const navigate = useNavigate();
 
     const closeModal = () => {
-        console.log(openNewPost)
         setOpenNewPost(false);
     }
 

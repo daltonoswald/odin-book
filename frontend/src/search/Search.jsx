@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import Nav from '../nav/Nav';
 import { Link, useNavigate } from 'react-router-dom';
 import { handleFollow, handleUnfollow } from '../utils/postUtils'
+import followIcon from '../assets/icons/heartplus.svg'
+import unfollowIcon from '../assets/icons/heartbroken.svg'
 import './search.styles.css'
 
 const Search = () => {
@@ -83,10 +85,15 @@ const Search = () => {
                                 >{searchResult.username}</Link>
                             <p>{searchResult._count.followed_by} Followers</p>
                             {(searchResult.followed_by.length > 0) && (
-                                <button className='follow-button' onClick={handleUnfollow} id={searchResult.id}>Unfollow</button>
+                                // <button className='follow-button' onClick={handleUnfollow} id={searchResult.id}>Unfollow</button>
+                                <div className='follow-container'>
+                                    <img className='unfollow icon' id={searchResult.id} src={unfollowIcon} alt='unfollow user' onClick={handleUnfollow} />
+                                </div>
                             )}
                             {(searchResult.followed_by.length < 1) && (
-                                <button className='follow-button' onClick={handleFollow} id={searchResult.id}>Follow</button>
+                                <div className='follow-container'>
+                                    <img className='follow icon' id={searchResult.id} src={followIcon} alt='follow user' onClick={handleFollow} />
+                                </div>
                             )}
                         </div>
                     ))}

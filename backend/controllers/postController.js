@@ -60,6 +60,9 @@ exports.findPosts = asyncHandler(async (req, res, next) => {
                         select: { likes: true },
                     }
                 },
+                orderBy: {
+                    created_at: 'asc'
+                },
             },
             likes: {
                 where: {

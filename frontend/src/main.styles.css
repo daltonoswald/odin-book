@@ -18,6 +18,7 @@ body {
 
 a {
     text-decoration: none;
+    color: black;
     font-weight: 700;
 }
 
@@ -41,4 +42,34 @@ a:hover {
     overflow-anchor: auto;
 
     background-color: #fdfeff;
+}
+
+.follow-container {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    width: fit-content;
+    padding: .5em 1em;
+    border-radius: 8px;
+    margin: 4px;
+}
+
+.post-likes:hover,
+.comment-likes:hover,
+.follow-container:hover {
+    background-color: #dfe2e9;
+}
+
+.unlike {
+    filter: invert(30%) sepia(87%) saturate(4154%) hue-rotate(215deg) brightness(103%) contrast(110%);
+}
+
+.unlike:hover,
+.unfollow:hover {
+    filter: invert(36%) sepia(91%) saturate(7487%) hue-rotate(357deg) brightness(91%) contrast(128%);
+}
+
+.like:hover,
+.follow:hover {
+    filter: invert(30%) sepia(87%) saturate(4154%) hue-rotate(215deg) brightness(103%) contrast(110%);
 }

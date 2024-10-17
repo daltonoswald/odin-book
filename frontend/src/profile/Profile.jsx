@@ -6,7 +6,10 @@ import { format } from 'date-fns';
 import { handleLikePost, handleUnlikePost, handleLikeComment, handleUnlikeComment, handleDeletePost, handleDeleteComment, handleNewComment,
     handleFollow, handleUnfollow
  } from '../utils/postUtils'
+ import followIcon from '../assets/icons/heartplus.svg'
+import unfollowIcon from '../assets/icons/heartbroken.svg'
 import './profile.styles.css'
+import Postfeed from '../homepage/Postfeed';
 
 const Search = () => {
     // const [token, setToken] = useState(localStorage.getItem('authenticationToken'))
@@ -69,10 +72,14 @@ const Search = () => {
                         <button className='edit-profile-button' id={profileData.id}>Edit Profile</button>
                     )}
                     {((profileData.followed_by.length > 0) && (profileData.id !== me.user.id)) && (
-                        <button className='follow-button' onClick={handleUnfollow} id={profileData.id}>Unfollow</button>
+                        <div className='follow-container'>
+                            <img className='unfollow icon' id={profileData.id} src={unfollowIcon} alt='unfollow user' onClick={handleUnfollow} />
+                        </div>
                     )}
                     {((profileData.followed_by.length < 1) && (profileData.id !== me.user.id)) && (
-                        <button className='follow-button' onClick={handleFollow} id={profileData.id}>Follow</button>
+                        <div className='follow-container'>
+                            <img className='follow icon' id={profileData.id} src={followIcon} alt='follow user' onClick={handleFollow} />
+                        </div>
                     )}
                 </div>
                 <p>{profileData.bio}</p>
@@ -81,97 +88,7 @@ const Search = () => {
                     <p>{profileData._count.following} Following</p>
                 </div>
             </div>
-            <div className='post-feed'>
-                {(profileData.posts.length > 0 && !isLoading) && (
-                    <>
-                        {profileData.posts.map((post) => (
-                            <div className='post' key={post.id} id={post.id}>
-                                <div className='post-info'>
-                                    {/* <p className='post-name'>{post.user.first_name} {post.user.last_name}</p> */}
-                                    {/* <p className='post-username'>{post.user.username}</p> */}
-                                    <div className='post-names'>
-                                        <p className='post-name'>{post.user.first_name} {post.user.last_name}</p>
-                                        <Link 
-                                            to={`/profile/${post.user.username}`}
-                                            key={post.user.id}
-                                            >{post.user.username}</Link>
-                                    </div>
-                                    <div className='post-info-right'>
-                                        <p className='post-date'>{format(post.created_at, 'EEEE, MMMM dd, yyyy')}</p>
-                                        {(post.user.id === me.user.id) && (
-                                            <button onClick={handleDeletePost}>Delete</button>
-                                        )}
-                                    </div>
-                                </div>
-                                {/* <div className='post-content'>{post.content}</div> */}
-                                <div className='post-content' dangerouslySetInnerHTML={{ __html: post.content} }></div>
-                                <div className='post-interactions'>
-                                <div className='post-likes'>
-                                        {(post.likes.length > 0) && (
-                                            <button onClick={handleUnlikePost} id={post.id}>Unlike</button>
-                                        )}
-                                        {(post.likes.length === 0) && (
-                                            <button onClick={handleLikePost} id={post.id}>Like</button>
-                                        )}
-                                        <p>{post._count.likes} Likes</p>
-                                </div>
-                                    {post.comments.map((comment) => (
-                                        <div className='comment' key={comment.id} id={comment.id}>
-                                            <div className='comment-info'>
-                                                <div className='comment-names'>
-                                                    <p className='comment-name'>{comment.user.first_name} {comment.user.last_name}</p>
-                                                    {/* <p className='comment-username'>{comment.user.username}</p> */}
-                                                    <Link
-                                                        to={`/profile/${comment.user.username}`}
-                                                        key={comment.user.id}
-                                                        >{comment.user.username}</Link>
-                                                </div>
-                                                <div className='comment-info-right'>
-                                                    <p className='comment-date'>{format(comment.created_at, 'EEEE, MMMM dd, yyyy')}</p>
-                                                    {(comment.user.id === me.user.id) && (
-                                                        <button onClick={handleDeleteComment}>Delete</button>
-                                                    )}
-                                                </div>
-                                            </div>
-                                            {/* <div className='comment-content'>{comment.content}</div> */}
-                                            <div className='comment-content' dangerouslySetInnerHTML={{ __html: comment.content} }></div>
-                                            <div className='comment-interactions'>
-                                                <div className='comment-likes'>
-                                                    {(comment.likes.length > 0) && (
-                                                        <button onClick={handleUnlikeComment} id={comment.id}>Unlike</button>
-                                                    )}
-                                                    {(comment.likes.length === 0) && (
-                                                        <button onClick={handleLikeComment} id={comment.id}>Like</button>
-                                                    )}
-                                                    <p>{comment._count.likes} Likes</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                    <form onSubmit={handleNewComment} className='new-comment-form'>
-                                        <input 
-                                            type='text'
-                                            id='content'
-                                            name='content'
-                                            required />
-                                        <button className='new-comment-button' type='submit'>Reply</button>
-                                    </form>
-                                </div>
-                            </div>
-                        ))}
-                    </>
-                )}
-                {(profileData.posts.length === 0 && !isLoading) && (
-                    <>
-                        <div className='no-posts'>
-                            <p>No posts yet...</p>
-                        </div>
-                    </>
-                )}
-                {(isLoading) && (
-                    <p>Loading posts...</p>
-                )}
-            </div> 
+            <Postfeed posts={profileData.posts} me={me} isLoading={isLoading} />
         </div>
         </>
     )

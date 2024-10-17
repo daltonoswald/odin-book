@@ -1,9 +1,11 @@
 /* eslint-disable react/prop-types */
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './login.styles.css';
 
-export default function LogIn({openLogIn, setOpenLogIn}) {
+export default function LogIn({ openLogIn, setOpenLogIn}) {
     const navigate = useNavigate();
+    const [message, setMessage] = useState();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -25,8 +27,38 @@ export default function LogIn({openLogIn, setOpenLogIn}) {
             const data = await response.json();
 
             if (response.ok) {
-                console.log(`response`, response)
-                console.log(`data`, data)
+                localStorage.setItem('authenticationToken', data.token);
+                localStorage.setItem('username', data.user.username);
+                navigate('/home');
+            } else {
+                console.error("Error requesting authentication:", data.message);
+                setMessage(data.message)
+            }
+        } catch (error) {
+            console.error('Error requesting authentication:', error);
+        }
+    }
+
+    const handleGuestLogIn = async (event) => {
+        event.preventDefault();
+        const url = `http://localhost:3000/user/log-in`
+        const formData = {
+            username: 'guestaccount',
+            password: 'testuser',
+        };
+        console.log(formData)
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+                mode: "cors",
+            });
+            const data = await response.json();
+
+            if (response.ok) {
                 localStorage.setItem('authenticationToken', data.token);
                 localStorage.setItem('username', data.user.username);
                 navigate('/home');
@@ -66,6 +98,10 @@ export default function LogIn({openLogIn, setOpenLogIn}) {
                     <button className="submit-button" type='submit'>Log in</button>
                 </form>
                 {/* <p>Don&apos;t have an account? Sign up</p> */}
+                <button onClick={handleGuestLogIn} className="guest-log-in">Sign in as a guest.</button>
+                {message && (
+                    <p className="error-message">{message}</p>
+                )}
             </div>
         </>
     )

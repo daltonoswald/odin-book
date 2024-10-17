@@ -43,7 +43,7 @@ const App = () => {
             )}
             <button onClick={handleOpenSignUp}>Sign up</button>
             {openSignUp && (
-                <SignUp openSignUp={openSignUp} setOpenSignUp={setOpenSignUp} />
+                <SignUp openSignUp={openSignUp} setOpenSignUp={setOpenSignUp} setOpenLogIn={setOpenLogIn} />
             )}
         </div>
         </>
