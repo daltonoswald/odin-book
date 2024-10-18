@@ -214,7 +214,10 @@ exports.find_users = asyncHandler( async (req, res, next) => {
             _count: {
                 select: { followed_by: true }
             }
-        }
+        },
+        orderBy: {
+            username: 'asc'
+        },
     });
     if (!userList) {
         res.status(401).json({ message: `No users found matching ${req.body.username}`});

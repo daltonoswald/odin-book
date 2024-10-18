@@ -13,11 +13,9 @@ export default function NewPost({openNewPost, setOpenNewPost}) {
     return (
         <>
             <div className="new-post-modal">
-                <h1>New Post</h1>
                 <button onClick={closeModal} className="close-modal">X</button>
                 <form onSubmit={handleNewPost} className="new-post-form">
-                    <label htmlFor="content">New Post</label>
-                    <input  
+                    <textarea  
                         type='text'
                         id='content'
                         name='content'

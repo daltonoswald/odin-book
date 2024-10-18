@@ -7,6 +7,11 @@ export default function SignUp({openSignUp, setOpenSignUp, setOpenLogIn}) {
     const navigate = useNavigate();
     const [message, setMessage] = useState();
 
+    const handleOpenLogIn = () => {
+        setOpenSignUp(false);
+        setOpenLogIn(true);
+    }
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -43,7 +48,6 @@ export default function SignUp({openSignUp, setOpenSignUp, setOpenLogIn}) {
     }
 
     const closeModal = () => {
-        console.log(openSignUp)
         setOpenSignUp(false);
     }
 
@@ -95,7 +99,7 @@ export default function SignUp({openSignUp, setOpenSignUp, setOpenLogIn}) {
                         required />
                     <button className="submit-button" type='submit'>Sign Up</button>
                 </form>
-                {/* <p>Already have an account? Log in</p> */}
+                <p>Already have an account? <button onClick={handleOpenLogIn}>Log in</button></p>
                 {message && (
                     <p className="error-message">{message}</p>
                 )}

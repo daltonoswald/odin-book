@@ -127,7 +127,7 @@ const handleDeletePost = async (event) => {
     event.preventDefault();
     const url = `http://localhost:3000/post/delete-post`
     const postToDelete = {
-        postToDelete: event.target.parentNode.parentNode.id
+        postToDelete: event.target.parentNode.parentNode.parentNode.id
     }
     try {
         const token = localStorage.getItem('authenticationToken');

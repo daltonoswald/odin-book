@@ -4,6 +4,7 @@ import Nav from '../nav/Nav';
 import { Link, useNavigate } from 'react-router-dom';
 import { handleFollow, handleUnfollow } from '../utils/postUtils'
 import followIcon from '../assets/icons/heartplus.svg'
+import followedIcon from '../assets/icons/heart.svg'
 import unfollowIcon from '../assets/icons/heartbroken.svg'
 import './search.styles.css'
 
@@ -40,7 +41,6 @@ const Search = () => {
             const data = await response.json();
 
             if (response.ok) {
-                console.log(data.userList);
                 setUser(data.user);
                 setSearchResults(data.userList);
             }
@@ -54,12 +54,11 @@ const Search = () => {
         <Nav />
         <div className='content'>
             <form onSubmit={handleSearch} className='search-form'>
-                <label htmlFor='username'>Find Users</label>
-                <input 
+                <textarea
                     type='text'
                     id='username'
                     name='username'
-                    placeholder='Search' />
+                    placeholder='Find users' />
                 <button className='submit-button' type='submit'>Search</button>
             </form>
             <div className='search-results'>
@@ -77,17 +76,18 @@ const Search = () => {
                     <>
                     {searchResults.map((searchResult) => (
                         <div className='user' key={searchResult.id} id={searchResult.id}>
-                            {/* <p>{searchResult.username}</p> */}
                             <Link
                                 to={`/profile/${searchResult.username}`}
                                 key={searchResult.id}
-                                // state={{ searchResult }}
                                 >{searchResult.username}</Link>
                             <p>{searchResult._count.followed_by} Followers</p>
                             {(searchResult.followed_by.length > 0) && (
-                                // <button className='follow-button' onClick={handleUnfollow} id={searchResult.id}>Unfollow</button>
                                 <div className='follow-container'>
-                                    <img className='unfollow icon' id={searchResult.id} src={unfollowIcon} alt='unfollow user' onClick={handleUnfollow} />
+                                    <img className='followed icon' id={searchResult.id} src={followedIcon} alt='unfollow user' 
+                                    onClick={handleUnfollow}
+                                    onMouseOver={e => (e.currentTarget.src= unfollowIcon)} 
+                                    onMouseOut={e => (e.currentTarget.src= followedIcon)} 
+                                     />
                                 </div>
                             )}
                             {(searchResult.followed_by.length < 1) && (

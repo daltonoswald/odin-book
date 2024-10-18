@@ -6,8 +6,9 @@ import { format } from 'date-fns';
 import { handleLikePost, handleUnlikePost, handleLikeComment, handleUnlikeComment, handleDeletePost, handleDeleteComment, handleNewComment,
     handleFollow, handleUnfollow
  } from '../utils/postUtils'
- import followIcon from '../assets/icons/heartplus.svg'
+import followIcon from '../assets/icons/heartplus.svg'
 import unfollowIcon from '../assets/icons/heartbroken.svg'
+import followedIcon from '../assets/icons/heart.svg';
 import './profile.styles.css'
 import Postfeed from '../homepage/Postfeed';
 
@@ -73,7 +74,11 @@ const Search = () => {
                     )}
                     {((profileData.followed_by.length > 0) && (profileData.id !== me.user.id)) && (
                         <div className='follow-container'>
-                            <img className='unfollow icon' id={profileData.id} src={unfollowIcon} alt='unfollow user' onClick={handleUnfollow} />
+                            <img className='followed icon' id={profileData.id} src={followedIcon} alt='unfollow user' 
+                                onClick={handleUnfollow} 
+                                onMouseOver={e => (e.currentTarget.src= unfollowIcon)} 
+                                onMouseOut={e => (e.currentTarget.src= followedIcon)} 
+                                />
                         </div>
                     )}
                     {((profileData.followed_by.length < 1) && (profileData.id !== me.user.id)) && (

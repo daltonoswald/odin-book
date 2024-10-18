@@ -4,6 +4,7 @@ import {    handleNewPost, handleLikePost, handleUnlikePost,
             handleLikeComment, handleUnlikeComment, handleDeletePost,
             handleDeleteComment, handleNewComment } from '../utils/postUtils'
 import smileIcon from '../assets/icons/smile.svg'
+import './postfeed.styles.css'
 import { useNavigate, Link } from "react-router-dom";
 
 export default function Postfeed({posts, isLoading, me}) {

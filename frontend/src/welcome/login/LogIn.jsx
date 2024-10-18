@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './login.styles.css';
 
-export default function LogIn({ openLogIn, setOpenLogIn}) {
+export default function LogIn({ openLogIn, setOpenLogIn, setOpenSignUp}) {
     const navigate = useNavigate();
     const [message, setMessage] = useState();
 
@@ -71,8 +71,12 @@ export default function LogIn({ openLogIn, setOpenLogIn}) {
         }
     }
 
+    const handleOpenSignUp = () => {
+        setOpenSignUp(true);
+        setOpenLogIn(false);
+    }
+
     const closeModal = () => {
-        console.log(openLogIn)
         setOpenLogIn(false);
     }
 
@@ -97,7 +101,7 @@ export default function LogIn({ openLogIn, setOpenLogIn}) {
                         required />
                     <button className="submit-button" type='submit'>Log in</button>
                 </form>
-                {/* <p>Don&apos;t have an account? Sign up</p> */}
+                <p>Don&apos;t have an account? <button onClick={handleOpenSignUp}>Sign up</button></p>
                 <button onClick={handleGuestLogIn} className="guest-log-in">Sign in as a guest.</button>
                 {message && (
                     <p className="error-message">{message}</p>

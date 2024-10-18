@@ -60,12 +60,14 @@ a:hover {
     background-color: #dfe2e9;
 }
 
-.unlike {
+.unlike,
+.followed {
     filter: invert(30%) sepia(87%) saturate(4154%) hue-rotate(215deg) brightness(103%) contrast(110%);
 }
 
 .unlike:hover,
-.unfollow:hover {
+.unfollow:hover,
+.followed:hover {
     filter: invert(36%) sepia(91%) saturate(7487%) hue-rotate(357deg) brightness(91%) contrast(128%);
 }
 

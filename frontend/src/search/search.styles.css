@@ -1,4 +1,22 @@
-.search-form,
 .search-results {
-    padding-left: 20px;
+    padding: 20px;
+    border-top: 1px solid rgb(90, 90, 90);
+}
+
+
+
+.search-form {
+    display: flex;
+    align-items: center;
+    padding: 0 20px 20px 20px;
+}
+
+.search-form > textarea {
+    width: 100%;
+    background-color: #F2F4F7;
+    margin: 4px;
+    height: 3em;
+    resize: none;
+    outline: none;
+    font-family: 'Roboto', sans-serif;
 }
