@@ -7,6 +7,7 @@ import followIcon from '../assets/icons/heartplus.svg'
 import followedIcon from '../assets/icons/heart.svg'
 import unfollowIcon from '../assets/icons/heartbroken.svg'
 import './search.styles.css'
+import Trending from '../nav/Trending';
 
 const Search = () => {
     const [token, setToken] = useState(localStorage.getItem('authenticationToken'))
@@ -58,7 +59,8 @@ const Search = () => {
                     type='text'
                     id='username'
                     name='username'
-                    placeholder='Find users' />
+                    placeholder='Find users'
+                    />
                 <button className='submit-button' type='submit'>Search</button>
             </form>
             <div className='search-results'>
@@ -101,6 +103,7 @@ const Search = () => {
                 )}
             </div>
         </div>
+        <Trending />
         </>
     )
 }

@@ -227,6 +227,49 @@ exports.find_users = asyncHandler( async (req, res, next) => {
 
 })
 
+exports.trending_users = asyncHandler( async (req, res, next) => {
+    const token = req.headers.authorization.split(' ')[1];
+    const authorizedUser = verifyToken(token);
+    const authorizedUserId = authorizedUser.user.id
+    const trendingUsers = await prisma.user.findMany({
+        orderBy: [
+            {
+                followed_by: {
+                    _count: 'desc'
+                }
+            }
+        ],
+        take: 3,
+        where: {
+            NOT: [
+                {
+                    username: {
+                        equals: authorizedUser.user.username
+                    }
+                }
+            ]
+        },
+        select: {
+            id: true,
+            username: true,
+            followed_by: {
+                where: {
+                    followed_by_id: {
+                        equals: authorizedUserId
+                    }
+                },
+            },
+        },
+    });
+    if (!trendingUsers) {
+        res.status(401).json({ message: `No users found`});
+    } else {
+        console.log(trendingUsers);
+        res.json({ trendingUsers: trendingUsers, user: authorizedUser.user });
+    }
+
+})
+
 exports.follow_user = asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
     const token = req.headers.authorization.split(' ')[1];
@@ -341,10 +384,13 @@ exports.profile = asyncHandler(async (req, res, next) => {
                                 select: { likes: true },
                             }
                         },
+                        orderBy: {
+                            created_at: 'asc'
+                        }
                     },
                 },
                 orderBy: {
-                    updated_at: 'desc'
+                    created_at: 'desc'
                 },
             }
         }

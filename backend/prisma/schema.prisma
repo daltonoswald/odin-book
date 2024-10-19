@@ -20,6 +20,8 @@ model User {
   username      String        @unique
   password      String
   bio           String?
+  created_at    DateTime      @default(now())
+  updated_at    DateTime      @updatedAt
   followed_by   Follows[]     @relation("following")
   following     Follows[]     @relation("followed_by")
   posts         Post[]

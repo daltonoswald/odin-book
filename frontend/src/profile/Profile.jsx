@@ -11,6 +11,7 @@ import unfollowIcon from '../assets/icons/heartbroken.svg'
 import followedIcon from '../assets/icons/heart.svg';
 import './profile.styles.css'
 import Postfeed from '../homepage/Postfeed';
+import Trending from '../nav/Trending';
 
 const Search = () => {
     // const [token, setToken] = useState(localStorage.getItem('authenticationToken'))
@@ -95,6 +96,7 @@ const Search = () => {
             </div>
             <Postfeed posts={profileData.posts} me={me} isLoading={isLoading} />
         </div>
+        <Trending />
         </>
     )
 }

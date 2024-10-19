@@ -8,6 +8,7 @@ import { handleNewPost, handleLikePost, handleUnlikePost,
 import smileIcon from '../assets/icons/smile.svg'
 import './homepage.styles.css';
 import Postfeed from './Postfeed';
+import Trending from '../nav/Trending';
 
 const Homepage = () => {
     const [token, setToken] = useState(localStorage.getItem('authenticationToken'))
@@ -67,6 +68,7 @@ const Homepage = () => {
             </div>
             <Postfeed posts={posts} me={me} isLoading={isLoading} />    
         </div>
+        <Trending />
         </>
     )
 }
