@@ -77,7 +77,7 @@ exports.findPosts = asyncHandler(async (req, res, next) => {
             updated_at: 'desc'
         },
     })
-    res.json({ posts: findPosts, user: authorizedUser.user });
+    res.json({ posts: findPosts, user: authorizedUser });
 })
 
 exports.new_post = [

@@ -27,7 +27,7 @@ export default function Postfeed({posts, isLoading, me}) {
                             </div>
                             <div className='post-info-right'>
                             <p className='post-date'>{format(post.created_at, 'EEEE, MMMM dd, yyyy')}</p>
-                                {(post.userId === me.id) && (
+                                {(post.user.id === me.user.id) && (
                                     <button onClick={handleDeletePost}>Delete</button>
                                 )}
                             </div>
@@ -61,7 +61,7 @@ export default function Postfeed({posts, isLoading, me}) {
                                         </div>
                                         <div className='comment-info-right'>
                                             <p className='comment-date'>{format(comment.created_at, 'EEEE, MMMM dd, yyyy')}</p>
-                                            {(comment.user.id === me.id) && (
+                                            {(comment.user.id === me.user.id) && (
                                                 <button onClick={handleDeleteComment}>Delete</button>
                                             )}
                                         </div>

@@ -12,12 +12,14 @@ import followedIcon from '../assets/icons/heart.svg';
 import './profile.styles.css'
 import Postfeed from '../homepage/Postfeed';
 import Trending from '../nav/Trending';
+import EditProfile from './EditProfile';
 
-const Search = () => {
+const Profile = () => {
     // const [token, setToken] = useState(localStorage.getItem('authenticationToken'))
     const [isLoading, setIsLoading] = useState(true);
     const [profileData, setProfileData] = useState();
     const [me, setMe] = useState();
+    const [openEdit, setOpenEdit] = useState(false);
     const navigate = useNavigate();
     const params = useParams();
 
@@ -60,6 +62,11 @@ const Search = () => {
         )
     }
 
+    const handleOpenEdit = () => {
+        setOpenEdit(true);
+    }
+
+    if (!isLoading) {
     return (
         <>
         <Nav />
@@ -70,8 +77,8 @@ const Search = () => {
                         <h1>{profileData.first_name} {profileData.last_name}</h1>
                         <h2>{profileData.username}</h2>
                     </div>
-                    {(profileData.id === me.user.id) && (
-                        <button className='edit-profile-button' id={profileData.id}>Edit Profile</button>
+                    {profileData.id === me.user.id && (
+                        <button className='edit-profile-button' id={profileData.id} onClick={handleOpenEdit}>Edit Profile</button>
                     )}
                     {((profileData.followed_by.length > 0) && (profileData.id !== me.user.id)) && (
                         <div className='follow-container'>
@@ -93,6 +100,9 @@ const Search = () => {
                     <p>{profileData._count.followed_by} Followers</p>
                     <p>{profileData._count.following} Following</p>
                 </div>
+                {( openEdit && !isLoading) && (
+                    <EditProfile openEdit={openEdit} setOpenEdit={setOpenEdit} profileData={profileData} me={me} setMe={setMe} />
+                )}
             </div>
             <Postfeed posts={profileData.posts} me={me} isLoading={isLoading} />
         </div>
@@ -100,5 +110,6 @@ const Search = () => {
         </>
     )
 }
+}
 
-export default Search
+export default Profile

@@ -11,8 +11,6 @@ router.post('/trending-users', userController.trending_users);
 router.post('/follow-user', userController.follow_user);
 router.post('/unfollow-user', userController.unfollow_user);
 router.post('/profile/:username', userController.profile)
-
-router.post('/testUser', userController.testUser);
-
+router.post('/edit-profile', userController.edit_profile);
 
 module.exports = router;

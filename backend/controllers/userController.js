@@ -264,7 +264,6 @@ exports.trending_users = asyncHandler( async (req, res, next) => {
     if (!trendingUsers) {
         res.status(401).json({ message: `No users found`});
     } else {
-        console.log(trendingUsers);
         res.json({ trendingUsers: trendingUsers, user: authorizedUser.user });
     }
 
@@ -310,10 +309,6 @@ exports.unfollow_user = asyncHandler(async (req, res, next) => {
     })
     res.json({ message: 'User unfollowed'})
 })
-
-exports.testUser = async (req, res, next) => {
-    console.log(`testUser`, req.user);
-}
 
 exports.profile = asyncHandler(async (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
@@ -397,3 +392,48 @@ exports.profile = asyncHandler(async (req, res, next) => {
     })
     res.json({ profile: userProfile, user: authorizedUser });
 })
+
+exports.edit_profile = [
+    body('first_name', 'First Name must not be empty.')
+        .trim()
+        .isLength({ min: 1, max: 50 })
+        .escape(),
+    body('last_name', 'Last Name must not be empty.')
+        .trim()
+        .isLength({ min: 1, max: 50 })
+        .escape(),
+    body('username', 'Username must not be empty.')
+        .trim()
+        .isLength({ min: 1, max: 50})
+        .escape(),
+    body('bio')
+        .trim()
+        .escape(),
+
+    async(req, res, next) => {
+        const token = req.headers.authorization.split(' ')[1];
+        const authorizedUser = verifyToken(token);
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                const errorsMessages = errors.array().map((error) => error.msg);
+                res.json({ error: errorsMessages })
+            } else {
+                const updatedUser = await prisma.user.update({
+                    where: {
+                        id: authorizedUser.user.id
+                    },
+                    data: {
+                        first_name: req.body.first_name,
+                        last_name: req.body.last_name,
+                        username: req.body.username,
+                        bio: req.body.bio
+                    }
+                })
+                res.json({ message: 'User updated', updatedUser: updatedUser, user: authorizedUser})
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+]
