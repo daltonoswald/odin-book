@@ -16,6 +16,23 @@
     padding: 1em;
 }
 
+.sign-up-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 75%;
+}
+
+.sign-up-picture-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sign-up-picture {
+    height: 256px;
+}
+
 .sign-up-form {
     display: flex;
     flex-direction: column;

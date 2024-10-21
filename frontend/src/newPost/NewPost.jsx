@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useNavigate } from "react-router-dom";
-import './nav.styles.css';
+import './newpost.styles.css';
 import { handleNewPost } from "../utils/postUtils";
 
 export default function NewPost({openNewPost, setOpenNewPost}) {

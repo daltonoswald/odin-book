@@ -35,6 +35,7 @@ exports.findPosts = asyncHandler(async (req, res, next) => {
                     first_name: true,
                     last_name: true,
                     username: true,
+                    picture: true,
                     id: true,
                 },
             },
@@ -46,6 +47,7 @@ exports.findPosts = asyncHandler(async (req, res, next) => {
                             first_name: true,
                             last_name: true,
                             username: true,
+                            picture: true,
                             id: true,  
                         }
                     },

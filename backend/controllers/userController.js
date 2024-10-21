@@ -130,6 +130,8 @@ exports.sign_up = [
     body('bio')
         .trim()
         .escape(),
+    body('picture')
+        .trim(),
 
     async(req, res, next) => {
         try {
@@ -160,7 +162,8 @@ exports.sign_up = [
                             last_name: req.body.last_name,
                             username: req.body.username,
                             password: await bcryptjs.hash(req.body.password, 10),
-                            bio: req.body.bio
+                            bio: req.body.bio,
+                            picture: req.body.picture
                         }
                     })
                     res.json({ message: 'User successfully created' })
@@ -202,6 +205,7 @@ exports.find_users = asyncHandler( async (req, res, next) => {
         select: {
             id: true,
             username: true,
+            picture: true,
             // followed_by: true,
             followed_by: {
                 where: {
@@ -252,6 +256,7 @@ exports.trending_users = asyncHandler( async (req, res, next) => {
         select: {
             id: true,
             username: true,
+            picture: true,
             followed_by: {
                 where: {
                     followed_by_id: {
@@ -324,6 +329,7 @@ exports.profile = asyncHandler(async (req, res, next) => {
             last_name: true,
             username: true,
             bio: true,
+            picture: true,
             followed_by: {
                 where: {
                     followed_by_id: {
@@ -345,6 +351,7 @@ exports.profile = asyncHandler(async (req, res, next) => {
                             first_name: true,
                             last_name: true,
                             username: true,
+                            picture: true,
                             id: true,
                         },
                     },
@@ -365,6 +372,7 @@ exports.profile = asyncHandler(async (req, res, next) => {
                                     first_name: true,
                                     last_name: true,
                                     username: true,
+                                    picture: true,
                                     id: true,  
                                 }
                             },
@@ -409,6 +417,8 @@ exports.edit_profile = [
     body('bio')
         .trim()
         .escape(),
+    body('picture')
+        .trim(),
 
     async(req, res, next) => {
         const token = req.headers.authorization.split(' ')[1];
@@ -427,7 +437,8 @@ exports.edit_profile = [
                         first_name: req.body.first_name,
                         last_name: req.body.last_name,
                         username: req.body.username,
-                        bio: req.body.bio
+                        bio: req.body.bio,
+                        picture: req.body.picture
                     }
                 })
                 res.json({ message: 'User updated', updatedUser: updatedUser, user: authorizedUser})

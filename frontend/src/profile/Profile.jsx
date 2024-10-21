@@ -46,6 +46,7 @@ const Profile = () => {
                 if (response.ok) {
                     const profileData = await response.json()
                     setProfileData(profileData.profile);
+                    console.log(profileData.profile)
                     setMe(profileData.user);
                     setIsLoading(false);
                 }
@@ -73,9 +74,12 @@ const Profile = () => {
         <div className='content'>
             <div className='profile-header'>
                 <div className='profile-header-top'>
-                    <div className='profile-header-top-name'>
-                        <h1>{profileData.first_name} {profileData.last_name}</h1>
-                        <h2>{profileData.username}</h2>
+                    <div className='profile-header-top-left'>
+                            <img src={profileData.picture} className='profile-page-picture' alt='profile picture' />
+                            <div className='profile-header-top-name'>
+                            <h1>{profileData.first_name} {profileData.last_name}</h1>
+                            <h2>{profileData.username}</h2>
+                        </div>
                     </div>
                     {profileData.id === me.user.id && (
                         <button className='edit-profile-button' id={profileData.id} onClick={handleOpenEdit}>Edit Profile</button>

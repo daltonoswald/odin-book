@@ -1,11 +1,13 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import UploadWidget from "../../newPost/UploadWidget";
 import './signup.styles.css';
 
 export default function SignUp({openSignUp, setOpenSignUp, setOpenLogIn}) {
     const navigate = useNavigate();
     const [message, setMessage] = useState();
+    const [profilePictureURL, setProfilePictureURL] = useState();
 
     const handleOpenLogIn = () => {
         setOpenSignUp(false);
@@ -23,6 +25,7 @@ export default function SignUp({openSignUp, setOpenSignUp, setOpenLogIn}) {
             password: event.target.password.value,
             confirm_password: event.target.confirm_password.value,
             bio: event.target.bio.value,
+            picture: profilePictureURL
         };
         try {
             const response = await fetch(url, {
@@ -56,49 +59,55 @@ export default function SignUp({openSignUp, setOpenSignUp, setOpenLogIn}) {
             <div className="sign-up-hero">
                 <h1>Sign into OdinBook</h1>
                 <button onClick={closeModal} className="close-modal">X</button>
-                <form onSubmit={handleSubmit} className="sign-up-form">
-                    <label htmlFor="first_name">First Name</label>
-                    <input
-                        type='text'
-                        id='first_name'
-                        name='first_name'
-                        required />
-                    <label htmlFor="last_name">Last Name</label>
-                    <input
-                        type='text'
-                        id='last_name'
-                        name='last_name'
-                        required />
-                    <label htmlFor="username">Username</label>
-                    <input  
-                        type='text'
-                        id='username'
-                        name='username'
-                        maxLength={50}
-                        required />
-                    <label htmlFor="bio">About Me</label>
-                    <input  
-                        type='text'
-                        id='usernamebio'
-                        name='bio'
-                        maxLength={200}
-                        required />
-                    <label htmlFor="password">Password</label>
-                    <input
-                        type='password'
-                        id='password'
-                        name='password'
-                        minLength={8}
-                        required />
-                    <label htmlFor="confirm_password">Confirm Password</label>
-                    <input
-                        type='password'
-                        id='confirm_password'
-                        name='confirm_password'
-                        minLength={8}
-                        required />
-                    <button className="submit-button" type='submit'>Sign Up</button>
-                </form>
+                <div className="sign-up-container">
+                    <div className="sign-up-picture-container">
+                        <img src={profilePictureURL || "https://res.cloudinary.com/djqgww7lw/image/upload/v1729526394/jq7lzspb5b1eycw7vg6x.png"} className='sign-up-picture' />
+                        <UploadWidget profilePictureURL={profilePictureURL} setProfilePictureURL={setProfilePictureURL} />
+                    </div>
+                    <form onSubmit={handleSubmit} className="sign-up-form">
+                        <label htmlFor="first_name">First Name</label>
+                        <input
+                            type='text'
+                            id='first_name'
+                            name='first_name'
+                            required />
+                        <label htmlFor="last_name">Last Name</label>
+                        <input
+                            type='text'
+                            id='last_name'
+                            name='last_name'
+                            required />
+                        <label htmlFor="username">Username</label>
+                        <input  
+                            type='text'
+                            id='username'
+                            name='username'
+                            maxLength={50}
+                            required />
+                        <label htmlFor="bio">About Me</label>
+                        <input  
+                            type='text'
+                            id='usernamebio'
+                            name='bio'
+                            maxLength={200}
+                            required />
+                        <label htmlFor="password">Password</label>
+                        <input
+                            type='password'
+                            id='password'
+                            name='password'
+                            minLength={8}
+                            required />
+                        <label htmlFor="confirm_password">Confirm Password</label>
+                        <input
+                            type='password'
+                            id='confirm_password'
+                            name='confirm_password'
+                            minLength={8}
+                            required />
+                        <button className="submit-button" type='submit'>Sign Up</button>
+                    </form>
+                </div>
                 <p>Already have an account? <button onClick={handleOpenLogIn}>Log in</button></p>
                 {message && (
                     <p className="error-message">{message}</p>

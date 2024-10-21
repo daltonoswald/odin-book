@@ -5,6 +5,12 @@
     flex-direction: column;
 }
 
+.trending-left {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
 .topics,
 .trending-users {
     border: 2px solid rgb(90, 90, 90);
@@ -27,4 +33,9 @@
     align-items: center;
     width: 100%;
     justify-content: space-between;
+}
+
+.trending-user-picture {
+    height: 32px;
+    border-radius: 25%;
 }

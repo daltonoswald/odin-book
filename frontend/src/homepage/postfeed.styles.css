@@ -12,11 +12,24 @@
     background-color: #fdfeff;
 }
 
+.post-profile-picture,
+.comment-profile-picture {
+    height: 36px;
+    border-radius: 25%;
+}
+
 .post-info,
 .comment-info {
     display: flex;
-    align-items: center;
+    /* align-items: center; */
     justify-content: space-between;
+    align-items: flex-start;
+}
+
+.post-info-left,
+.comment-info-left {
+    display: flex;
+    align-items: center;
 }
 
 .post-name,

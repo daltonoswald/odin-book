@@ -77,26 +77,35 @@ const Search = () => {
                 {(searchResults !== null && searchResults.length > 0) && (
                     <>
                     {searchResults.map((searchResult) => (
-                        <div className='user' key={searchResult.id} id={searchResult.id}>
-                            <Link
-                                to={`/profile/${searchResult.username}`}
-                                key={searchResult.id}
-                                >{searchResult.username}</Link>
-                            <p>{searchResult._count.followed_by} Followers</p>
-                            {(searchResult.followed_by.length > 0) && (
-                                <div className='follow-container'>
-                                    <img className='followed icon' id={searchResult.id} src={followedIcon} alt='unfollow user' 
-                                    onClick={handleUnfollow}
-                                    onMouseOver={e => (e.currentTarget.src= unfollowIcon)} 
-                                    onMouseOut={e => (e.currentTarget.src= followedIcon)} 
-                                     />
-                                </div>
-                            )}
-                            {(searchResult.followed_by.length < 1) && (
-                                <div className='follow-container'>
-                                    <img className='follow icon' id={searchResult.id} src={followIcon} alt='follow user' onClick={handleFollow} />
-                                </div>
-                            )}
+                        <div className='search-user' key={searchResult.id} id={searchResult.id}>
+                            <div className='search-profile-left'>
+                                <Link
+                                    to={`/profile/${searchResult.username}`}
+                                    key={searchResult.id}
+                                    >
+                                    <img src={searchResult.picture} className='search-profile-picture' alt='profile picture' /></Link>
+                                <Link
+                                    to={`/profile/${searchResult.username}`}
+                                    key={searchResult.id}
+                                    >{searchResult.username}</Link>
+                            </div>
+                            <div className='search-profile-right'>
+                                <p>{searchResult._count.followed_by} Followers</p>
+                                {(searchResult.followed_by.length > 0) && (
+                                    <div className='follow-container'>
+                                        <img className='followed icon' id={searchResult.id} src={followedIcon} alt='unfollow user' 
+                                        onClick={handleUnfollow}
+                                        onMouseOver={e => (e.currentTarget.src= unfollowIcon)} 
+                                        onMouseOut={e => (e.currentTarget.src= followedIcon)} 
+                                        />
+                                    </div>
+                                )}
+                                {(searchResult.followed_by.length < 1) && (
+                                    <div className='follow-container'>
+                                        <img className='follow icon' id={searchResult.id} src={followIcon} alt='follow user' onClick={handleFollow} />
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     ))}
                     </>

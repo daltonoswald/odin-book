@@ -2,9 +2,11 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import './profile.styles.css'
+import UploadWidget from "../newPost/UploadWidget";
 
 export default function EditProfile({openEdit, setOpenEdit, profileData, me, setMe}) {
     const navigate = useNavigate();
+    const [profilePictureURL, setProfilePictureURL] = useState();
     const [message, setMessage] = useState();
     const params = useParams();
 
@@ -53,6 +55,7 @@ export default function EditProfile({openEdit, setOpenEdit, profileData, me, set
             last_name: event.target.last_name.value,
             username: event.target.username.value,
             bio: event.target.bio.value,
+            picture: profilePictureURL
         };
         try {
             const response = await fetch(url, {
@@ -115,6 +118,7 @@ export default function EditProfile({openEdit, setOpenEdit, profileData, me, set
                     name='bio' 
                     defaultValue={profileData.bio}
                     required />
+                <UploadWidget profilePictureURL={profilePictureURL} setProfilePictureURL={setProfilePictureURL} />
                 <button className="submit-button">Save</button>
             </form>
         </div>
