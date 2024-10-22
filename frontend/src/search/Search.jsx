@@ -81,12 +81,10 @@ const Search = () => {
                             <div className='search-profile-left'>
                                 <Link
                                     to={`/profile/${searchResult.username}`}
-                                    key={searchResult.id}
                                     >
                                     <img src={searchResult.picture} className='search-profile-picture' alt='profile picture' /></Link>
                                 <Link
                                     to={`/profile/${searchResult.username}`}
-                                    key={searchResult.id}
                                     >{searchResult.username}</Link>
                             </div>
                             <div className='search-profile-right'>

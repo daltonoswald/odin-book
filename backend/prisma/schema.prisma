@@ -20,7 +20,7 @@ model User {
   username      String        @unique
   password      String
   bio           String?
-  picture       String        @default("https://res.cloudinary.com/djqgww7lw/image/upload/v1729526394/jq7lzspb5b1eycw7vg6x.png")
+  picture       String?       @default("https://res.cloudinary.com/djqgww7lw/image/upload/v1729526394/jq7lzspb5b1eycw7vg6x.png")
   created_at    DateTime      @default(now())
   updated_at    DateTime      @updatedAt
   followed_by   Follows[]     @relation("following")

@@ -12,5 +12,6 @@ router.post('/follow-user', userController.follow_user);
 router.post('/unfollow-user', userController.unfollow_user);
 router.post('/profile/:username', userController.profile)
 router.post('/edit-profile', userController.edit_profile);
+router.post('/edit-profile-picture', userController.edit_profile_picture)
 
 module.exports = router;

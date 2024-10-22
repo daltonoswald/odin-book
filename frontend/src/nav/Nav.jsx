@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import NewPost from '../newPost/NewPost'
-import UploadWidget from '../newPost/UploadWidget'
-import UploadFile from '../newPost/UploadFile'
 import './nav.styles.css';
 
 export default function Nav() {
@@ -32,8 +30,6 @@ export default function Nav() {
                 <Link to='/search' className="nav-link">Search</Link>
                 <button onClick={handleNewPost}>New Post</button>          
             </div>
-            <UploadWidget />
-            <UploadFile />
             <div className="nav-bottom">
                 <Link to={`/profile/${localStorage.getItem('username')}`}>{localStorage.getItem('username')}</Link>
                 <button onClick={logout}>Logout</button>

@@ -438,7 +438,35 @@ exports.edit_profile = [
                         last_name: req.body.last_name,
                         username: req.body.username,
                         bio: req.body.bio,
-                        picture: req.body.picture
+                    }
+                })
+                res.json({ message: 'User updated', updatedUser: updatedUser, user: authorizedUser})
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+]
+
+exports.edit_profile_picture = [
+    body('picture')
+        .trim(),
+
+    async(req, res, next) => {
+        const token = req.headers.authorization.split(' ')[1];
+        const authorizedUser = verifyToken(token);
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                const errorsMessages = errors.array().map((error) => error.msg);
+                res.json({ error: errorsMessages })
+            } else {
+                const updatedUser = await prisma.user.update({
+                    where: {
+                        id: authorizedUser.user.id
+                    },
+                    data: {
+                        picture: req.body.picture,
                     }
                 })
                 res.json({ message: 'User updated', updatedUser: updatedUser, user: authorizedUser})

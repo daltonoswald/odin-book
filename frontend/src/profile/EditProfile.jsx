@@ -2,11 +2,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import './profile.styles.css'
-import UploadWidget from "../newPost/UploadWidget";
 
 export default function EditProfile({openEdit, setOpenEdit, profileData, me, setMe}) {
     const navigate = useNavigate();
-    const [profilePictureURL, setProfilePictureURL] = useState();
+    const [image, setImage] = useState('');
     const [message, setMessage] = useState();
     const params = useParams();
 
@@ -46,8 +45,52 @@ export default function EditProfile({openEdit, setOpenEdit, profileData, me, set
         getProfile();
     }, [])
 
-    const handleEditSubmit = async (event) => {
+    const handlePictureSubmit = async (event) => {
         event.preventDefault();
+        const data = new FormData()
+            data.append('file', image)
+            data.append('upload_preset', 'oujmgi7l');
+            data.append('cloud_name', 'djqgww7lw')
+            await fetch("https://api.cloudinary.com/v1_1/djqgww7lw/image/upload", {
+                method: "post",
+                body: data
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                console.log(data.secure_url);
+                sendData(data);
+            })
+    }
+
+    async function sendData(data) {
+        const token = localStorage.getItem('authenticationToken');
+        const url = `http://localhost:3000/user/edit-profile-picture`
+        const formData = {
+            picture: data.secure_url
+        };
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    'Content-Type': "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify(formData),
+                mode: 'cors',
+            });
+            const data = await response.json();
+
+            if (response.ok) {
+                setOpenEdit(false);
+                navigate(0);
+            }
+        } catch (error) {
+            console.error(`Error requesting authentication:`, error);
+        }
+    }
+
+    async function handleEditSubmit(event) {
         const token = localStorage.getItem('authenticationToken');
         const url = `http://localhost:3000/user/edit-profile`
         const formData = {
@@ -55,7 +98,6 @@ export default function EditProfile({openEdit, setOpenEdit, profileData, me, set
             last_name: event.target.last_name.value,
             username: event.target.username.value,
             bio: event.target.bio.value,
-            picture: profilePictureURL
         };
         try {
             const response = await fetch(url, {
@@ -88,6 +130,11 @@ export default function EditProfile({openEdit, setOpenEdit, profileData, me, set
     return (
         <div className="edit-profile-modal">
             <button onClick={closeModal} className="close-modal">X</button>
+            <div className="edit-profile-picture">
+                <img src={profileData.picture} className={'edit-profile-picture-image'} />
+                <input type='file' onChange={(e) => setImage(e.target.files[0])}></input>
+                <button onClick={handlePictureSubmit}>Upload</button>
+            </div>
             <form onSubmit={handleEditSubmit} className="edit-profile-form">
                 <h1>Edit Profile</h1>
                 <label htmlFor="first_name">First Name</label>
@@ -118,7 +165,6 @@ export default function EditProfile({openEdit, setOpenEdit, profileData, me, set
                     name='bio' 
                     defaultValue={profileData.bio}
                     required />
-                <UploadWidget profilePictureURL={profilePictureURL} setProfilePictureURL={setProfilePictureURL} />
                 <button className="submit-button">Save</button>
             </form>
         </div>

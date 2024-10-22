@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import UploadWidget from "../../newPost/UploadWidget";
 import './signup.styles.css';
 
 export default function SignUp({openSignUp, setOpenSignUp, setOpenLogIn}) {
     const navigate = useNavigate();
     const [message, setMessage] = useState();
+    const [image, setImage] = useState('');
     const [profilePictureURL, setProfilePictureURL] = useState();
 
     const handleOpenLogIn = () => {
@@ -15,6 +15,24 @@ export default function SignUp({openSignUp, setOpenSignUp, setOpenLogIn}) {
     }
 
     const handleSubmit = async (event) => {
+        event.preventDefault();
+        const data = new FormData()
+            data.append('file', image)
+            data.append('upload_preset', 'oujmgi7l');
+            data.append('cloud_name', 'djqgww7lw')
+            await fetch("https://api.cloudinary.com/v1_1/djqgww7lw/image/upload", {
+                method: "post",
+                body: data
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                console.log(data.secure_url);
+                handleSend(event, data);
+            })
+    }
+
+    const handleSend = async (event, data) => {
         event.preventDefault();
 
         const url = `http://localhost:3000/user/sign-up`
@@ -25,8 +43,9 @@ export default function SignUp({openSignUp, setOpenSignUp, setOpenLogIn}) {
             password: event.target.password.value,
             confirm_password: event.target.confirm_password.value,
             bio: event.target.bio.value,
-            picture: profilePictureURL
+            picture: data.secure_url || "https://res.cloudinary.com/djqgww7lw/image/upload/v1729526394/jq7lzspb5b1eycw7vg6x.png"
         };
+        console.log(formData)
         try {
             const response = await fetch(url, {
                 method: "POST",
@@ -62,7 +81,6 @@ export default function SignUp({openSignUp, setOpenSignUp, setOpenLogIn}) {
                 <div className="sign-up-container">
                     <div className="sign-up-picture-container">
                         <img src={profilePictureURL || "https://res.cloudinary.com/djqgww7lw/image/upload/v1729526394/jq7lzspb5b1eycw7vg6x.png"} className='sign-up-picture' />
-                        <UploadWidget profilePictureURL={profilePictureURL} setProfilePictureURL={setProfilePictureURL} />
                     </div>
                     <form onSubmit={handleSubmit} className="sign-up-form">
                         <label htmlFor="first_name">First Name</label>
@@ -105,6 +123,7 @@ export default function SignUp({openSignUp, setOpenSignUp, setOpenLogIn}) {
                             name='confirm_password'
                             minLength={8}
                             required />
+                            <input type='file' onChange={(e) => setImage(e.target.files[0])}></input>
                         <button className="submit-button" type='submit'>Sign Up</button>
                     </form>
                 </div>
