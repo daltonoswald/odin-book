@@ -17,10 +17,16 @@
 .nav-top {
     display: flex;
     flex-direction: column;
+    gap: 4px;
+}
+
+.nav-top > button,
+.nav-bottom > button {
+    width: 75%
 }
 
 .nav-title {
-    color: #0866FF !important;
+    color: #e4b461 !important;
 }
 
 .nav-top > a {

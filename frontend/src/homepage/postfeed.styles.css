@@ -76,6 +76,9 @@
 
 .new-comment-form {
     padding-top: 1em;
+    flex-wrap: nowrap;
+    display: flex;
+    gap: 4px;
 }
 
 .new-comment-form > input {

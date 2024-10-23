@@ -204,7 +204,6 @@ exports.unlike_post = asyncHandler(async (req, res, next) => {
         const token = req.headers.authorization.split(' ')[1];
         const authorizedUser = verifyToken(token);
         const commentToLike = req.body.commentToLike
-        console.log(req.body);
         
         const alreadyLiked = await prisma.commentLike.findMany({
             where: {
@@ -212,7 +211,6 @@ exports.unlike_post = asyncHandler(async (req, res, next) => {
                 commentId: commentToLike,
             }
         })
-        console.log('alreadyLiked', alreadyLiked);
         if (alreadyLiked.length === 0) {
             const commentLike = await prisma.commentLike.create({
                 data: {

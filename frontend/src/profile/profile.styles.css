@@ -15,6 +15,7 @@ h1, h2 {
 .profile-page-picture {
     border-radius: 25%;
     height: 48px;
+    width: 48px;
 }
 
 .profile-header-top {
@@ -77,4 +78,5 @@ h1, h2 {
 
 .edit-profile-picture-image {
     height: 128px;
+    width: 128px;
 }

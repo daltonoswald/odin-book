@@ -1,17 +1,13 @@
 import { useEffect, useState } from 'react';
 import Nav from '../nav/Nav';
-import { useNavigate, Link } from 'react-router-dom';
-import { format } from 'date-fns';
-import { handleNewPost, handleLikePost, handleUnlikePost, 
-            handleLikeComment, handleUnlikeComment, handleDeletePost,
-            handleDeleteComment, handleNewComment } from '../utils/postUtils'
-import smileIcon from '../assets/icons/smile.svg'
+import { useNavigate } from 'react-router-dom';
+import { handleNewPost } from '../utils/postUtils'
 import './homepage.styles.css';
 import Postfeed from './Postfeed';
 import Trending from '../nav/Trending';
 
 const Homepage = () => {
-    const [token, setToken] = useState(localStorage.getItem('authenticationToken'))
+    const token = localStorage.getItem('authenticationToken');
     const [posts, setPosts] = useState([]);
     const [me, setMe] = useState();
     const [isLoading, setIsLoading] = useState(true);
@@ -43,7 +39,7 @@ const Homepage = () => {
             }
         }
         getPosts();
-    }, [token])
+    }, [token, navigate])
 
     return (
         <>
@@ -51,12 +47,6 @@ const Homepage = () => {
         <div className='content'>
             <div className='homepage-new-post'>
                 <form onSubmit={handleNewPost} className="new-post-form">
-                    {/* <input  
-                        type='text'
-                        id='content'
-                        name='content'
-                        placeholder='What is happening?'
-                        required /> */}
                         <textarea 
                             id='content'
                             name='content'

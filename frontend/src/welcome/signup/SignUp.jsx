@@ -1,13 +1,11 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import './signup.styles.css';
 
 export default function SignUp({openSignUp, setOpenSignUp, setOpenLogIn}) {
-    const navigate = useNavigate();
     const [message, setMessage] = useState();
-    const [image, setImage] = useState('');
-    const [profilePictureURL, setProfilePictureURL] = useState();
+    const [image, setImage] = useState();
+    // const [profilePictureURL, setProfilePictureURL] = useState();
 
     const handleOpenLogIn = () => {
         setOpenSignUp(false);
@@ -80,7 +78,7 @@ export default function SignUp({openSignUp, setOpenSignUp, setOpenLogIn}) {
                 <button onClick={closeModal} className="close-modal">X</button>
                 <div className="sign-up-container">
                     <div className="sign-up-picture-container">
-                        <img src={profilePictureURL || "https://res.cloudinary.com/djqgww7lw/image/upload/v1729526394/jq7lzspb5b1eycw7vg6x.png"} className='sign-up-picture' />
+                        <img src={ image ? URL.createObjectURL(image) : "https://res.cloudinary.com/djqgww7lw/image/upload/v1729526394/jq7lzspb5b1eycw7vg6x.png"} className='sign-up-picture' />
                     </div>
                     <form onSubmit={handleSubmit} className="sign-up-form">
                         <label htmlFor="first_name">First Name</label>

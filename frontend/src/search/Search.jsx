@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-key */
 import { useEffect, useState } from 'react';
 import Nav from '../nav/Nav';
 import { Link, useNavigate } from 'react-router-dom';
@@ -10,16 +9,15 @@ import './search.styles.css'
 import Trending from '../nav/Trending';
 
 const Search = () => {
-    const [token, setToken] = useState(localStorage.getItem('authenticationToken'))
+    const token = localStorage.getItem('authenticationToken');
     const [searchResults, setSearchResults] = useState(null);
-    const [user, setUser] = useState();
     const navigate = useNavigate();
 
     useEffect(() => {
         if (!token) {
             navigate('/');
         }
-    }, [token])
+    }, [token, navigate])
 
     const handleSearch = async (event) => {
         event.preventDefault();
@@ -27,7 +25,6 @@ const Search = () => {
         const formData = {
             username: event.target.username.value
         };
-        console.log(formData);
         try {
             const token = localStorage.getItem('authenticationToken');
             const response = await fetch(url, {
@@ -42,7 +39,6 @@ const Search = () => {
             const data = await response.json();
 
             if (response.ok) {
-                setUser(data.user);
                 setSearchResults(data.userList);
             }
         } catch (error) {
@@ -85,7 +81,7 @@ const Search = () => {
                                     <img src={searchResult.picture} className='search-profile-picture' alt='profile picture' /></Link>
                                 <Link
                                     to={`/profile/${searchResult.username}`}
-                                    >{searchResult.username}</Link>
+                                    >@{searchResult.username}</Link>
                             </div>
                             <div className='search-profile-right'>
                                 <p>{searchResult._count.followed_by} Followers</p>

@@ -1,14 +1,14 @@
 /* eslint-disable react/prop-types */
 import { format } from 'date-fns';
-import {    handleNewPost, handleLikePost, handleUnlikePost, 
+import {    handleLikePost, handleUnlikePost, 
             handleLikeComment, handleUnlikeComment, handleDeletePost,
             handleDeleteComment, handleNewComment } from '../utils/postUtils'
 import smileIcon from '../assets/icons/smile.svg'
+import frownIcon from '../assets/icons/frown.svg'
 import './postfeed.styles.css'
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Postfeed({posts, isLoading, me}) {
-    const navigate = useNavigate();
 
     return (
         <div className='post-feed'>
@@ -24,7 +24,7 @@ export default function Postfeed({posts, isLoading, me}) {
                                     <Link 
                                         to={`/profile/${post.user.username}`}
                                         key={post.user.id}
-                                        >{post.user.username}</Link>
+                                        >@{post.user.username}</Link>
                                 </div>
                             </div>
                             <div className='post-info-right'>
@@ -40,7 +40,10 @@ export default function Postfeed({posts, isLoading, me}) {
                             <div className='post-likes'>
                                 {(post.likes.length > 0) && (
                                     <div className='icon-container'>
-                                        <img className='unlike icon' id={post.id} src={smileIcon} alt='unlike post' onClick={handleUnlikePost} />
+                                        <img className='unlike icon' id={post.id} src={smileIcon} alt='unlike post'
+                                        onMouseOver={e => (e.currentTarget.src= frownIcon)}
+                                        onMouseOut={e => (e.currentTarget.src= smileIcon)}
+                                        onClick={handleUnlikePost} />
                                     </div>
                                 )}
                                 {(post.likes.length === 0) && (
@@ -61,7 +64,7 @@ export default function Postfeed({posts, isLoading, me}) {
                                                 <Link
                                                     to={`/profile/${comment.user.username}`}
                                                     key={comment.user.id}
-                                                    >{comment.user.username}</Link>
+                                                    >@{comment.user.username}</Link>
                                             </div>
                                         </div>
                                         <div className='comment-info-right'>
@@ -77,7 +80,10 @@ export default function Postfeed({posts, isLoading, me}) {
                                         <div className='comment-likes'>
                                             {(comment.likes.length > 0) && (
                                                 <div className='icon-container'>
-                                                    <img className='unlike icon' id={comment.id} src={smileIcon} alt='unlike post' onClick={handleUnlikeComment} />
+                                                    <img className='unlike icon' id={comment.id} src={smileIcon} alt='unlike post' 
+                                                    onMouseOver={e => (e.currentTarget.src= frownIcon)}
+                                                    onMouseOut={e => (e.currentTarget.src= smileIcon)}
+                                                    onClick={handleUnlikeComment} />
                                                 </div>
                                             )}
                                             {(comment.likes.length === 0) && (

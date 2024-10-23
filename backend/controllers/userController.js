@@ -9,60 +9,6 @@ const { generateToken, verifyToken } = require('../middleware/middleware');
 const LocalStrategy = require('passport-local').Strategy;
 require('dotenv').config();
 
-// passport.use(
-//     new LocalStrategy(async (username, password, done) => {
-//         try {
-//             const user = await prisma.user.findFirst({
-//                 where: {
-//                     username: username
-//                 }
-//             });
-//             console.log(`username: `, username);
-//             console.log(user);
-//             if (!user) {
-//                 return done(null, false, { message: 'Username not found. Username may be case sensitive.' });
-//             }
-//             const match = await bcryptjs.compare(password, user.password);
-//             if (!match) {
-//                 return done(null, false, { message: "Incorrect password" });
-//             };
-//             console.log(`line 27: `, user);
-//             return done(null, user);
-//         } catch (err) {
-//             return done(err);
-//         }
-//     })
-// )
-
-// passport.serializeUser((user, done) => {
-//     // console.log(`line 36: `, user)
-//     done(null, user.id);
-// });
-
-// passport.deserializeUser(async (id, done) => {
-//     try {
-//         const user = await prisma.user.findUnique({
-//             where: {
-//                 id: id
-//             }
-//         });
-//         done(null, user)
-//     } catch (err) {
-//         done(err);
-//     }
-// });
-
-
-// exports.log_in = [
-//     passport.authenticate('local'),
-//     function(req, res) {
-//         res.cookie('session', req.user.id, { secure: true, signed: true, expires: new Date(Date.now() + 3600)})
-//         console.log('Cookies: ', req.cookies);
-//         console.log('Signed: ', req.signedCookies);
-//         res.json({ message: "Success", user: req.user});
-//     }
-// ]
-
 exports.log_in = asyncHandler(async (req, res, next) => {
     const user = await prisma.user.findFirst({
         where: {

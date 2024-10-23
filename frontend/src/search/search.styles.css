@@ -13,10 +13,13 @@
 .search-profile-right {
     display: flex;
     align-items: center;
+    gap: 16px;
 }
 
 .search-profile-picture {
     height: 32px;
+    width: 32px;
+    border-radius: 25%;
 }
 
 

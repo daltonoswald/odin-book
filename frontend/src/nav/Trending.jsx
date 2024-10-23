@@ -12,7 +12,6 @@ import './trending.styles.css';
 export default function Trending() {
     const [isLoading, setIsLoading] = useState(true);
     const [trendingUsers, setTrendingUsers] = useState();
-    const [token, setToken] = useState(localStorage.getItem('authenticationToken'))
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -40,7 +39,7 @@ export default function Trending() {
             }
         }
         getTrending();
-    }, [token])
+    }, [navigate])
 
     return (
         <>
@@ -70,7 +69,7 @@ export default function Trending() {
                                         <Link
                                             to={`/profile/${user.username}`}
                                             key={user.id}
-                                            >{user.username}</Link>
+                                            >@{user.username}</Link>
                                     </div>
                                 {(user.followed_by.length > 0) && (
                                 <div className='follow-container'>

@@ -14,6 +14,9 @@
     z-index: 1;
     padding: 1em;
 }
+.log-in-hero > h1 {
+    color: #e4b461;
+}
 
 .log-in-form {
     display: flex;

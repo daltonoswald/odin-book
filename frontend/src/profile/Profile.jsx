@@ -1,11 +1,7 @@
-/* eslint-disable react/jsx-key */
 import { useEffect, useState } from 'react';
 import Nav from '../nav/Nav';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
-import { format } from 'date-fns';
-import { handleLikePost, handleUnlikePost, handleLikeComment, handleUnlikeComment, handleDeletePost, handleDeleteComment, handleNewComment,
-    handleFollow, handleUnfollow
- } from '../utils/postUtils'
+import { useNavigate, useParams } from 'react-router-dom';
+import { handleFollow, handleUnfollow } from '../utils/postUtils'
 import followIcon from '../assets/icons/heartplus.svg'
 import unfollowIcon from '../assets/icons/heartbroken.svg'
 import followedIcon from '../assets/icons/heart.svg';
@@ -55,7 +51,7 @@ const Profile = () => {
             }
         }
         getProfile();
-    }, [params.username])
+    }, [params.username, navigate])
 
     if (isLoading) {
         return (
@@ -78,7 +74,7 @@ const Profile = () => {
                             <img src={profileData.picture} className='profile-page-picture' alt='profile picture' />
                             <div className='profile-header-top-name'>
                             <h1>{profileData.first_name} {profileData.last_name}</h1>
-                            <h2>{profileData.username}</h2>
+                            <h2>@{profileData.username}</h2>
                         </div>
                     </div>
                     {profileData.id === me.user.id && (
@@ -99,7 +95,8 @@ const Profile = () => {
                         </div>
                     )}
                 </div>
-                <p>{profileData.bio}</p>
+                {/* <p>{profileData.bio}</p> */}
+                <p dangerouslySetInnerHTML={{ __html: profileData.bio} }></p>
                 <div className='following-data'>
                     <p>{profileData._count.followed_by} Followers</p>
                     <p>{profileData._count.following} Following</p>
