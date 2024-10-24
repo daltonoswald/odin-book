@@ -12,9 +12,11 @@ import EditProfile from './EditProfile';
 
 const Profile = () => {
     // const [token, setToken] = useState(localStorage.getItem('authenticationToken'))
+    const [error, setError] = useState();
     const [isLoading, setIsLoading] = useState(true);
     const [profileData, setProfileData] = useState();
     const [me, setMe] = useState();
+    const [following, setFollowing] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const navigate = useNavigate();
     const params = useParams();
@@ -39,10 +41,19 @@ const Profile = () => {
                     body: JSON.stringify(userToFind),
                     mode: "cors",
                 })
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    setIsLoading(false);
+                    setError(errorData)
+                }
                 if (response.ok) {
                     const profileData = await response.json()
                     setProfileData(profileData.profile);
-                    console.log(profileData.profile)
+                    profileData.profile.followed_by.forEach((element) => {
+                        if (element.followed_by.id === profileData.user.user.id) {
+                            setFollowing(true)
+                        }
+                    })
                     setMe(profileData.user);
                     setIsLoading(false);
                 }
@@ -80,7 +91,7 @@ const Profile = () => {
                     {profileData.id === me.user.id && (
                         <button className='edit-profile-button' id={profileData.id} onClick={handleOpenEdit}>Edit Profile</button>
                     )}
-                    {((profileData.followed_by.length > 0) && (profileData.id !== me.user.id)) && (
+                    {(following) && (
                         <div className='follow-container'>
                             <img className='followed icon' id={profileData.id} src={followedIcon} alt='unfollow user' 
                                 onClick={handleUnfollow} 
@@ -89,7 +100,8 @@ const Profile = () => {
                                 />
                         </div>
                     )}
-                    {((profileData.followed_by.length < 1) && (profileData.id !== me.user.id)) && (
+                    {/* {((profileData.followed_by.length < 1) && (profileData.id !== me.user.id)) && ( */}
+                    {(!following) && (
                         <div className='follow-container'>
                             <img className='follow icon' id={profileData.id} src={followIcon} alt='follow user' onClick={handleFollow} />
                         </div>

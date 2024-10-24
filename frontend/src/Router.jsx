@@ -23,7 +23,8 @@ export default function Router() {
         },
         {
           path: '/profile/:username',
-          element: <Profile />
+          element: <Profile />,
+          errorElement: <ErrorPage />
         },
         {
           path: '/test',

@@ -16,7 +16,7 @@ exports.log_in = asyncHandler(async (req, res, next) => {
         }
     });
     if (!user) {
-        res.status(401).json({ message: 'Username not found' });
+        res.status(401).json({ message: 'Username not found, Username may be case-sensitive.' });
     }
     try {
         bcryptjs.compare(req.body.password, user.password, (err, isMatch) => {
@@ -27,7 +27,7 @@ exports.log_in = asyncHandler(async (req, res, next) => {
             const token = jwt.sign({ user }, process.env.TOKEN_KEY, options);
 
             if (!isMatch) {
-                res.status(401).json({ message: "Password is incorrect." });
+                res.status(401).json({ message: "Incorrect username and password." });
             } else {
                 res.json({ message: 'User logged in successfully', token, user });
             }
@@ -127,11 +127,6 @@ exports.find_users = asyncHandler( async (req, res, next) => {
     const authorizedUser = verifyToken(token);
     const authorizedUserId = authorizedUser.user.id
     const userList = await prisma.user.findMany({
-        // where: {
-        //     username: {
-        //         contains: req.body.username
-        //     }
-        // },
         where: {
             OR: [
                 {
@@ -152,11 +147,9 @@ exports.find_users = asyncHandler( async (req, res, next) => {
             id: true,
             username: true,
             picture: true,
-            // followed_by: true,
             followed_by: {
                 where: {
                     followed_by_id: {
-                        // equals: "9d9264cd-b39d-4801-a791-d1033855b4af"
                         equals: authorizedUserId
                     }
                 },
@@ -276,14 +269,23 @@ exports.profile = asyncHandler(async (req, res, next) => {
             username: true,
             bio: true,
             picture: true,
+            // followed_by: {
+            //     where: {
+            //         followed_by_id: {
+            //             equals: authorizedUser.user.id
+            //         }
+            //     },
+            // },
             followed_by: {
-                where: {
-                    followed_by_id: {
-                        // equals: "9d9264cd-b39d-4801-a791-d1033855b4af"
-                        equals: authorizedUser.user.id
+                select: {
+                    followed_by: {
+                        select: {
+                            id: true,
+                        }
                     }
-                },
+                }
             },
+            // followed_by: true,
             _count: {
                 select: { followed_by: true, following: true }
             },
@@ -344,7 +346,11 @@ exports.profile = asyncHandler(async (req, res, next) => {
             }
         }
     })
-    res.json({ profile: userProfile, user: authorizedUser });
+    if (!userProfile) {
+        res.status(404).json({ error: 'User not found.'})
+    } else {
+        res.json({ profile: userProfile, user: authorizedUser });
+    }
 })
 
 exports.edit_profile = [
