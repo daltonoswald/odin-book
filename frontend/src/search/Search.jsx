@@ -11,6 +11,7 @@ import Trending from '../nav/Trending';
 const Search = () => {
     const token = localStorage.getItem('authenticationToken');
     const [searchResults, setSearchResults] = useState(null);
+    const [error, setError] = useState()
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -37,7 +38,9 @@ const Search = () => {
                 mode: "cors",
             });
             const data = await response.json();
-
+            if (!response.ok) {
+                setError(data.error)
+            }
             if (response.ok) {
                 setSearchResults(data.userList);
             }
@@ -60,7 +63,7 @@ const Search = () => {
                 <button className='submit-button' type='submit'>Search</button>
             </form>
             <div className='search-results'>
-                {(searchResults === null) && (
+                {(searchResults === null && !error) && (
                     <>
                         <p>Search for users</p>
                     </>
@@ -103,6 +106,12 @@ const Search = () => {
                         </div>
                     ))}
                     </>
+                )}
+                {error && (
+                    <>
+                        <p>There has been an error: {error.name}</p>
+                        <p>{error.message}</p>
+                    </> 
                 )}
             </div>
         </div>

@@ -8,7 +8,7 @@ import frownIcon from '../assets/icons/frown.svg'
 import './postfeed.styles.css'
 import { Link } from "react-router-dom";
 
-export default function Postfeed({posts, isLoading, me}) {
+export default function Postfeed({posts, isLoading, me, error}) {
 
     return (
         <div className='post-feed'>
@@ -116,8 +116,14 @@ export default function Postfeed({posts, isLoading, me}) {
                 </div>
             </>
         )}
-        {(isLoading) && (
+        {(isLoading && !error) && (
             <p>Loading posts...</p>
+        )}
+        {(isLoading && error) && (
+            <>
+                <p>There has been an error: {error.name}</p>
+                <p>{error.message}</p>
+            </>
         )}
     </div>    
     )

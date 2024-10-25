@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 export default function ErrorPage() {
     const navigate = useNavigate();
 
-
     function logout() {
         localStorage.removeItem('authenticationToken');
         localStorage.removeItem('username');

@@ -10,76 +10,80 @@ const LocalStrategy = require('passport-local').Strategy;
 require('dotenv').config();
 
 exports.findPosts = asyncHandler(async (req, res, next) => {
-    const token = req.headers.authorization.split(' ')[1];
-    const authorizedUser = verifyToken(token);
-    const findFollowing = await prisma.follows.findMany({
-        where: {
-            followed_by_id: authorizedUser.user.id
-        },
-        select: {
-            following_id: true,
-        }
-    })
-    followingList = findFollowing.map(function(followedBy) {
-        return followedBy.following_id;
-    })
-    const authorizedUserId = authorizedUser.user.id
-    followingList.push(authorizedUserId);
-    const findPosts = await prisma.post.findMany({
-        where: {
-            userId: { in: followingList }
-        },
-        include: {
-            user: {
-                select: {
-                    first_name: true,
-                    last_name: true,
-                    username: true,
-                    picture: true,
-                    id: true,
-                },
+    try {
+        const token = req.headers.authorization.split(' ')[1];
+        const authorizedUser = verifyToken(token);
+        const findFollowing = await prisma.follows.findMany({
+            where: {
+                followed_by_id: authorizedUser.user.id
             },
-            comments: {
-                select: {
-                    id: true,
-                    user: {
-                        select: {
-                            first_name: true,
-                            last_name: true,
-                            username: true,
-                            picture: true,
-                            id: true,  
+            select: {
+                following_id: true,
+            }
+        })
+        followingList = findFollowing.map(function(followedBy) {
+            return followedBy.following_id;
+        })
+        const authorizedUserId = authorizedUser.user.id
+        followingList.push(authorizedUserId);
+        const findPosts = await prisma.post.findMany({
+            where: {
+                userId: { in: followingList }
+            },
+            include: {
+                user: {
+                    select: {
+                        first_name: true,
+                        last_name: true,
+                        username: true,
+                        picture: true,
+                        id: true,
+                    },
+                },
+                comments: {
+                    select: {
+                        id: true,
+                        user: {
+                            select: {
+                                first_name: true,
+                                last_name: true,
+                                username: true,
+                                picture: true,
+                                id: true,  
+                            }
+                        },
+                        content: true,
+                        likes: {
+                            where: {
+                                userId: authorizedUserId
+                            }
+                        },
+                        created_at: true,
+                        _count: {
+                            select: { likes: true },
                         }
                     },
-                    content: true,
-                    likes: {
-                        where: {
-                            userId: authorizedUserId
-                        }
+                    orderBy: {
+                        created_at: 'desc'
                     },
-                    created_at: true,
-                    _count: {
-                        select: { likes: true },
+                },
+                likes: {
+                    where: {
+                        userId: authorizedUserId
                     }
                 },
-                orderBy: {
-                    created_at: 'desc'
-                },
-            },
-            likes: {
-                where: {
-                    userId: authorizedUserId
+                _count: {
+                    select: { likes: true },
                 }
             },
-            _count: {
-                select: { likes: true },
-            }
-        },
-        orderBy: {
-            updated_at: 'desc'
-        },
-    })
-    res.json({ posts: findPosts, user: authorizedUser });
+            orderBy: {
+                updated_at: 'desc'
+            },
+        })
+        res.json({ posts: findPosts, user: authorizedUser });
+    } catch (err) {
+        res.status(400).json({error: err})
+    }
 })
 
 exports.new_post = [
@@ -109,6 +113,7 @@ exports.new_post = [
                 res.json({ message: 'New post created', newPost: newPost });
             }
         } catch (err) {
+            res.json({ error: err })
             return next(err);
         }
     }

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './login.styles.css';
 
-export default function LogIn({ openLogIn, setOpenLogIn, setOpenSignUp}) {
+export default function LogIn({ setOpenLogIn, setOpenSignUp}) {
     const navigate = useNavigate();
     const [message, setMessage] = useState();
 
@@ -14,7 +14,6 @@ export default function LogIn({ openLogIn, setOpenLogIn, setOpenSignUp}) {
             username: event.target.username.value,
             password: event.target.password.value,
         };
-        console.log(formData)
         try {
             const response = await fetch(url, {
                 method: "POST",
@@ -43,7 +42,7 @@ export default function LogIn({ openLogIn, setOpenLogIn, setOpenSignUp}) {
         event.preventDefault();
         const url = `http://localhost:3000/user/log-in`
         const formData = {
-            username: 'guestaccount',
+            username: 'Guest',
             password: 'testuser',
         };
         console.log(formData)
@@ -102,7 +101,7 @@ export default function LogIn({ openLogIn, setOpenLogIn, setOpenSignUp}) {
                     <button className="submit-button" type='submit'>Log in</button>
                 </form>
                 <p>Don&apos;t have an account? <button onClick={handleOpenSignUp}>Sign up</button></p>
-                <button onClick={handleGuestLogIn} className="guest-log-in">Sign in as a guest.</button>
+                <button onClick={handleGuestLogIn} className="guest-log-in">Sign in as a guest</button>
                 {message && (
                     <p className="error-message">{message}</p>
                 )}

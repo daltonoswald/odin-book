@@ -2,7 +2,7 @@
 import { useState } from "react";
 import './signup.styles.css';
 
-export default function SignUp({openSignUp, setOpenSignUp, setOpenLogIn}) {
+export default function SignUp({ setOpenSignUp, setOpenLogIn }) {
     const [message, setMessage] = useState();
     const [image, setImage] = useState();
     // const [profilePictureURL, setProfilePictureURL] = useState();

@@ -123,49 +123,53 @@ exports.sign_up = [
 ]
 
 exports.find_users = asyncHandler( async (req, res, next) => {
-    const token = req.headers.authorization.split(' ')[1];
-    const authorizedUser = verifyToken(token);
-    const authorizedUserId = authorizedUser.user.id
-    const userList = await prisma.user.findMany({
-        where: {
-            OR: [
-                {
-                    username: {
-                        contains: req.body.username
+    try {
+        const token = req.headers.authorization.split(' ')[1];
+        const authorizedUser = verifyToken(token);
+        const authorizedUserId = authorizedUser.user.id
+        const userList = await prisma.user.findMany({
+            where: {
+                OR: [
+                    {
+                        username: {
+                            contains: req.body.username
+                        }
                     }
-                }
-            ],
-            NOT: [
-                {
-                    username: {
-                        equals: authorizedUser.user.username
+                ],
+                NOT: [
+                    {
+                        username: {
+                            equals: authorizedUser.user.username
+                        }
                     }
-                }
-            ]
-        },
-        select: {
-            id: true,
-            username: true,
-            picture: true,
-            followed_by: {
-                where: {
-                    followed_by_id: {
-                        equals: authorizedUserId
-                    }
-                },
+                ]
             },
-            _count: {
-                select: { followed_by: true }
-            }
-        },
-        orderBy: {
-            username: 'asc'
-        },
-    });
-    if (!userList) {
-        res.status(401).json({ message: `No users found matching ${req.body.username}`});
-    } else {
-        res.json({ userList: userList, user: authorizedUser.user });
+            select: {
+                id: true,
+                username: true,
+                picture: true,
+                followed_by: {
+                    where: {
+                        followed_by_id: {
+                            equals: authorizedUserId
+                        }
+                    },
+                },
+                _count: {
+                    select: { followed_by: true }
+                }
+            },
+            orderBy: {
+                username: 'asc'
+            },
+        });
+        if (!userList) {
+            res.status(401).json({ message: `No users found matching ${req.body.username}`});
+        } else {
+            res.json({ userList: userList, user: authorizedUser.user });
+        }
+    } catch (err) {
+        res.status(400).json({error: err})
     }
 
 })
@@ -255,101 +259,105 @@ exports.unfollow_user = asyncHandler(async (req, res, next) => {
 })
 
 exports.profile = asyncHandler(async (req, res, next) => {
-    const token = req.headers.authorization.split(' ')[1];
-    const authorizedUser = verifyToken(token);
-    const userToFind = req.body.userToFind;
-    const userProfile = await prisma.user.findFirst({
-        where: {
-            username: userToFind
-        },
-        select: {
-            id: true,
-            first_name: true,
-            last_name: true,
-            username: true,
-            bio: true,
-            picture: true,
-            // followed_by: {
-            //     where: {
-            //         followed_by_id: {
-            //             equals: authorizedUser.user.id
-            //         }
-            //     },
-            // },
-            followed_by: {
-                select: {
-                    followed_by: {
-                        select: {
-                            id: true,
+    try {
+        const token = req.headers.authorization.split(' ')[1];
+        const authorizedUser = verifyToken(token);
+        const userToFind = req.body.userToFind;
+        const userProfile = await prisma.user.findFirst({
+            where: {
+                username: userToFind
+            },
+            select: {
+                id: true,
+                first_name: true,
+                last_name: true,
+                username: true,
+                bio: true,
+                picture: true,
+                // followed_by: {
+                //     where: {
+                //         followed_by_id: {
+                //             equals: authorizedUser.user.id
+                //         }
+                //     },
+                // },
+                followed_by: {
+                    select: {
+                        followed_by: {
+                            select: {
+                                id: true,
+                            }
                         }
                     }
-                }
-            },
-            // followed_by: true,
-            _count: {
-                select: { followed_by: true, following: true }
-            },
-            posts: {
-                select: {
-                    id: true,
-                    content: true,
-                    // userId: true,
-                    user: {
-                        select: {
-                            first_name: true,
-                            last_name: true,
-                            username: true,
-                            picture: true,
-                            id: true,
+                },
+                // followed_by: true,
+                _count: {
+                    select: { followed_by: true, following: true }
+                },
+                posts: {
+                    select: {
+                        id: true,
+                        content: true,
+                        // userId: true,
+                        user: {
+                            select: {
+                                first_name: true,
+                                last_name: true,
+                                username: true,
+                                picture: true,
+                                id: true,
+                            },
                         },
-                    },
-                    likes: {
-                        where: {
-                            userId: authorizedUser.user.id
-                        }
-                    },
-                    _count: {
-                        select: { likes: true },
-                    },
-                    created_at: true,
-                    comments: {
-                        select: {
-                            id: true,
-                            user: {
-                                select: {
-                                    first_name: true,
-                                    last_name: true,
-                                    username: true,
-                                    picture: true,
-                                    id: true,  
-                                }
-                            },
-                            content: true,
-                            likes: {
-                                where: {
-                                    userId: authorizedUser.user.id
-                                }
-                            },
-                            created_at: true,
-                            _count: {
-                                select: { likes: true },
+                        likes: {
+                            where: {
+                                userId: authorizedUser.user.id
                             }
                         },
-                        orderBy: {
-                            created_at: 'asc'
-                        }
+                        _count: {
+                            select: { likes: true },
+                        },
+                        created_at: true,
+                        comments: {
+                            select: {
+                                id: true,
+                                user: {
+                                    select: {
+                                        first_name: true,
+                                        last_name: true,
+                                        username: true,
+                                        picture: true,
+                                        id: true,  
+                                    }
+                                },
+                                content: true,
+                                likes: {
+                                    where: {
+                                        userId: authorizedUser.user.id
+                                    }
+                                },
+                                created_at: true,
+                                _count: {
+                                    select: { likes: true },
+                                }
+                            },
+                            orderBy: {
+                                created_at: 'asc'
+                            }
+                        },
                     },
-                },
-                orderBy: {
-                    created_at: 'desc'
-                },
+                    orderBy: {
+                        created_at: 'desc'
+                    },
+                }
             }
+        })
+        if (!userProfile) {
+            res.status(404).json({ error: 'User not found.'})
+        } else {
+            res.json({ profile: userProfile, user: authorizedUser });
         }
-    })
-    if (!userProfile) {
-        res.status(404).json({ error: 'User not found.'})
-    } else {
-        res.json({ profile: userProfile, user: authorizedUser });
+    } catch (err) {
+        res.status(400).json({error: err})
     }
 })
 

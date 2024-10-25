@@ -12,7 +12,7 @@ import EditProfile from './EditProfile';
 
 const Profile = () => {
     // const [token, setToken] = useState(localStorage.getItem('authenticationToken'))
-    const [error, setError] = useState();
+    // const [error, setError] = useState();
     const [isLoading, setIsLoading] = useState(true);
     const [profileData, setProfileData] = useState();
     const [me, setMe] = useState();
@@ -44,7 +44,8 @@ const Profile = () => {
                 if (!response.ok) {
                     const errorData = await response.json();
                     setIsLoading(false);
-                    setError(errorData)
+                    console.error(`errorData`, errorData.error);
+                    // setError(errorData)
                 }
                 if (response.ok) {
                     const profileData = await response.json()
@@ -54,6 +55,7 @@ const Profile = () => {
                             setFollowing(true)
                         }
                     })
+                    console.log(profileData.user)
                     setMe(profileData.user);
                     setIsLoading(false);
                 }
@@ -88,10 +90,13 @@ const Profile = () => {
                             <h2>@{profileData.username}</h2>
                         </div>
                     </div>
-                    {profileData.id === me.user.id && (
+                    {(profileData.id === me.user.id && profileData.username !== 'Guest')  && (
                         <button className='edit-profile-button' id={profileData.id} onClick={handleOpenEdit}>Edit Profile</button>
                     )}
-                    {(following) && (
+                    {(profileData.id === me.user.id && profileData.username === 'Guest') && (
+                        <button className='edit-profile-button'>Edit Profile Disabled</button>
+                    )}
+                    {(following && (profileData.id !== me.user.id)) && (
                         <div className='follow-container'>
                             <img className='followed icon' id={profileData.id} src={followedIcon} alt='unfollow user' 
                                 onClick={handleUnfollow} 
@@ -101,7 +106,7 @@ const Profile = () => {
                         </div>
                     )}
                     {/* {((profileData.followed_by.length < 1) && (profileData.id !== me.user.id)) && ( */}
-                    {(!following) && (
+                    {(!following && (profileData.id !== me.user.id)) && (
                         <div className='follow-container'>
                             <img className='follow icon' id={profileData.id} src={followIcon} alt='follow user' onClick={handleFollow} />
                         </div>
@@ -114,7 +119,7 @@ const Profile = () => {
                     <p>{profileData._count.following} Following</p>
                 </div>
                 {( openEdit && !isLoading) && (
-                    <EditProfile openEdit={openEdit} setOpenEdit={setOpenEdit} profileData={profileData} me={me} setMe={setMe} />
+                    <EditProfile  setOpenEdit={setOpenEdit} profileData={profileData} setMe={setMe} />
                 )}
             </div>
             <Postfeed posts={profileData.posts} me={me} isLoading={isLoading} />

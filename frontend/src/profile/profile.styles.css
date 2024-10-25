@@ -28,7 +28,6 @@ h1, h2 {
 .edit-profile-button,
 .follow-button,
 .unfollow-button {
-    height: 32px;
     width: 128px;
 }
 

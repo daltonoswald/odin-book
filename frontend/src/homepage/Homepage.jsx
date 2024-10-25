@@ -8,6 +8,7 @@ import Trending from '../nav/Trending';
 
 const Homepage = () => {
     const token = localStorage.getItem('authenticationToken');
+    const [error, setError] = useState();
     const [posts, setPosts] = useState([]);
     const [me, setMe] = useState();
     const [isLoading, setIsLoading] = useState(true);
@@ -33,9 +34,13 @@ const Homepage = () => {
                     setPosts(postData.posts);
                     setMe(postData.user);
                     setIsLoading(false);
+                } else {
+                    const errorData = await response.json();
+                    setError(errorData.error);
+                    console.error(`Errors: `, errorData.error)
                 }
-            } catch (error) {
-                console.error(`Errors: ${error}`);
+            } catch (err) {
+                console.error(`Errors: ${err}`);
             }
         }
         getPosts();
@@ -56,7 +61,7 @@ const Homepage = () => {
                     <button className="submit-button" type='submit'>Post</button>
                 </form>
             </div>
-            <Postfeed posts={posts} me={me} isLoading={isLoading} />    
+            <Postfeed posts={posts} me={me} isLoading={isLoading} error={error} />    
         </div>
         <Trending />
         </>

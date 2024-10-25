@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import './profile.styles.css'
 
-export default function EditProfile({openEdit, setOpenEdit, profileData, me, setMe}) {
+export default function EditProfile({ setOpenEdit, profileData, setMe}) {
     const navigate = useNavigate();
     const [image, setImage] = useState('');
     const [message, setMessage] = useState();
@@ -79,7 +79,6 @@ export default function EditProfile({openEdit, setOpenEdit, profileData, me, set
                 body: JSON.stringify(formData),
                 mode: 'cors',
             });
-            const data = await response.json();
 
             if (response.ok) {
                 setOpenEdit(false);
@@ -91,6 +90,7 @@ export default function EditProfile({openEdit, setOpenEdit, profileData, me, set
     }
 
     async function handleEditSubmit(event) {
+        event.preventDefault();
         const token = localStorage.getItem('authenticationToken');
         const url = `http://localhost:3000/user/edit-profile`
         const formData = {
@@ -116,6 +116,7 @@ export default function EditProfile({openEdit, setOpenEdit, profileData, me, set
                 localStorage.setItem('username', data.updatedUser.username);
                 setMe(data.user)
                 setOpenEdit(false);
+                console.log(event.target.username.value);
                 navigate(`/profile/${event.target.username.value}`)
                 navigate(0);
             } else {
@@ -167,6 +168,9 @@ export default function EditProfile({openEdit, setOpenEdit, profileData, me, set
                     required />
                 <button className="submit-button">Save</button>
             </form>
+            {message && (
+                <p className="error-message">{message}</p>
+            )}
         </div>
     )
 }

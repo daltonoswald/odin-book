@@ -39,7 +39,7 @@ const App = () => {
         event.preventDefault();
         const url = `http://localhost:3000/user/log-in`
         const formData = {
-            username: 'guestaccount',
+            username: 'Guest',
             password: 'testuser',
         };
         try {
@@ -86,10 +86,10 @@ const App = () => {
                     <button onClick={handleGuestLogIn}>Guest Access</button>
                 </div>
                 {openLogIn && (
-                    <LogIn openLogIn={openLogIn} setOpenLogIn={setOpenLogIn} setOpenSignUp={setOpenSignUp} />
+                    <LogIn setOpenLogIn={setOpenLogIn} setOpenSignUp={setOpenSignUp} />
                 )}
                 {openSignUp && (
-                    <SignUp openSignUp={openSignUp} setOpenSignUp={setOpenSignUp} setOpenLogIn={setOpenLogIn} />
+                    <SignUp setOpenSignUp={setOpenSignUp} setOpenLogIn={setOpenLogIn} />
                 )}
             </div>
         </div>
