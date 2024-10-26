@@ -33,7 +33,8 @@ export default function SignUp({ setOpenSignUp, setOpenLogIn }) {
     const handleSend = async (event, data) => {
         event.preventDefault();
 
-        const url = `http://localhost:3000/user/sign-up`
+        // const url = `http://localhost:3000/user/sign-up`
+        const url = `https://odin-book-production-20fa.up.railway.app/user/sign-up`
         const formData = {
             first_name: event.target.first_name.value,
             last_name: event.target.last_name.value,
@@ -43,7 +44,6 @@ export default function SignUp({ setOpenSignUp, setOpenLogIn }) {
             bio: event.target.bio.value,
             picture: data.secure_url || "https://res.cloudinary.com/djqgww7lw/image/upload/v1729526394/jq7lzspb5b1eycw7vg6x.png"
         };
-        console.log(formData)
         try {
             const response = await fetch(url, {
                 method: "POST",

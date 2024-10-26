@@ -16,7 +16,8 @@ const Homepage = () => {
 
     useEffect(() => {
         const getPosts = async () => {
-            const url = `http://localhost:3000/post/find-posts`;
+            // const url = `http://localhost:3000/post/find-posts`;
+            const url = `https://odin-book-production-20fa.up.railway.app/post/find-posts`
             const token = localStorage.getItem('authenticationToken');
             if (!token) {
                 navigate('/');
