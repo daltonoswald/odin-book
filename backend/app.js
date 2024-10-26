@@ -32,7 +32,7 @@ app.use(passport.session());
 app.use(cors({
     origin: [
         `http://localhost:5173`,
-        "https://daltonoswald-odinbook.netlify.app/",
+        "https://daltonoswald-odinbook.netlify.app",
         '*'
     ],
     methods: ['GET', 'PUT', 'POST', 'DELETE'],
