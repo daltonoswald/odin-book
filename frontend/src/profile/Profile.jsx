@@ -23,7 +23,8 @@ const Profile = () => {
 
     useEffect(() => {
         const getProfile = async () => {
-            const url = `http://localhost:3000/user/profile/${params.username}`;
+            // const url = `http://localhost:3000/user/profile/${params.username}`;
+            const url =`https://daltonoswald-odinbook.up.railway.app/user/profile/${params.username}`
             const token = localStorage.getItem('authenticationToken');
             if (!token) {
                 navigate('/');

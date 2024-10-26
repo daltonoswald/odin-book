@@ -16,7 +16,8 @@ export default function Trending() {
 
     useEffect(() => {
         const getTrending = async () => {
-            const url = `http://localhost:3000/user/trending-users`;
+            // const url = `http://localhost:3000/user/trending-users`;
+            const url = `https://daltonoswald-odinbook.up.railway.app/user/trending-users`
             const token = localStorage.getItem('authenticationToken');
             if (!token) {
                 navigate('/');

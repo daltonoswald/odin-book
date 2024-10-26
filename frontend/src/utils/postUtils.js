@@ -1,6 +1,7 @@
 const handleNewPost = async (event) => {
     event.preventDefault();
-    const url = `http://localhost:3000/post/new-post`
+    // const url = `http://localhost:3000/post/new-post`
+    const url = `https://daltonoswald-odinbook.up.railway.app/post/new-post`
     const postData = {
         content: event.target.content.value
     }
@@ -25,7 +26,8 @@ const handleNewPost = async (event) => {
 
 const handleLikePost = async (event) => {
     event.preventDefault();
-    const url = `http://localhost:3000/post/like-post`;
+    // const url = `http://localhost:3000/post/like-post`;
+    const url = `https://daltonoswald-odinbook.up.railway.app/post/like-post`
     const postToLike = {
         postToLike: event.target.id
     }
@@ -50,7 +52,8 @@ const handleLikePost = async (event) => {
 
 const handleUnlikePost = async (event) => {
     event.preventDefault();
-    const url = `http://localhost:3000/post/unlike-post`;
+    // const url = `http://localhost:3000/post/unlike-post`;
+    const url = `https://daltonoswald-odinbook.up.railway.app/post/unlike-post`
     const postToUnlike = {
         postToUnlike: event.target.id
     }
@@ -75,7 +78,8 @@ const handleUnlikePost = async (event) => {
 
 const handleLikeComment = async (event) => {
     event.preventDefault();
-    const url = `http://localhost:3000/post/like-comment`;
+    // const url = `http://localhost:3000/post/like-comment`;
+    const url = `https://daltonoswald-odinbook.up.railway.app/post/like-comment`
     const commentToLike = {
         commentToLike: event.target.id
     }
@@ -100,7 +104,8 @@ const handleLikeComment = async (event) => {
 
 const handleUnlikeComment = async (event) => {
     event.preventDefault();
-    const url = `http://localhost:3000/post/unlike-comment`;
+    // const url = `http://localhost:3000/post/unlike-comment`;
+    const url = `https://daltonoswald-odinbook.up.railway.app/post/unlike-comment`
     const commentToUnlike = {
         commentToUnlike: event.target.id
     }
@@ -125,7 +130,8 @@ const handleUnlikeComment = async (event) => {
 
 const handleDeletePost = async (event) => {
     event.preventDefault();
-    const url = `http://localhost:3000/post/delete-post`
+    // const url = `http://localhost:3000/post/delete-post`
+    const url = `https://daltonoswald-odinbook.up.railway.app/post/delete-post`
     const postToDelete = {
         postToDelete: event.target.parentNode.parentNode.parentNode.id
     }
@@ -150,7 +156,8 @@ const handleDeletePost = async (event) => {
 
 const handleDeleteComment = async (event) => {
     event.preventDefault();
-    const url = `http://localhost:3000/post/delete-comment`
+    // const url = `http://localhost:3000/post/delete-comment`
+    const url = `https://daltonoswald-odinbook.up.railway.app/post/delete-comment`
     const commentToDelete = {
         commentToDelete: event.target.parentNode.parentNode.id
     }
@@ -175,7 +182,8 @@ const handleDeleteComment = async (event) => {
 
 const handleNewComment = async (event) => {
     event.preventDefault();
-    const url = `http://localhost:3000/post/new-comment`
+    // const url = `http://localhost:3000/post/new-comment`
+    const url = `https://daltonoswald-odinbook.up.railway.app/post/new-comment`
     const commentData = {
         content: event.target.content.value,
         postId: event.target.parentNode.parentNode.id
@@ -203,7 +211,8 @@ const handleNewComment = async (event) => {
 
 const handleFollow = async (event) => {
     event.preventDefault();
-    const url = `http://localhost:3000/user/follow-user`;
+    // const url = `http://localhost:3000/user/follow-user`;
+    const url = `https://daltonoswald-odinbook.up.railway.app/user/follow-user`
     const followId = {
         userToFollow: event.target.id
     }
@@ -230,7 +239,8 @@ const handleFollow = async (event) => {
 
 const handleUnfollow = async (event) => {
     event.preventDefault();
-    const url = `http://localhost:3000/user/unfollow-user`;
+    // const url = `http://localhost:3000/user/unfollow-user`;
+    const url = `https://daltonoswald-odinbook.up.railway.app/user/unfollow-user`
     const unfollowId = {
         userToUnfollow: event.target.id
     }

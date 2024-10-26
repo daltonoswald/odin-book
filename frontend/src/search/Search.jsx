@@ -22,7 +22,8 @@ const Search = () => {
 
     const handleSearch = async (event) => {
         event.preventDefault();
-        const url = `http://localhost:3000/user/find-users`;
+        // const url = `http://localhost:3000/user/find-users`;
+        const url = `https://daltonoswald-odinbook.up.railway.app/user/find-users`
         const formData = {
             username: event.target.username.value
         };

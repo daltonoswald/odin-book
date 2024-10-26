@@ -15,7 +15,8 @@ export default function EditProfile({ setOpenEdit, profileData, setMe}) {
 
     useEffect(() => {
         const getProfile = async () => {
-            const url = `http://localhost:3000/user/profile/${params.username}`;
+            // const url = `http://localhost:3000/user/profile/${params.username}`;
+            const url = `https://daltonoswald-odinbook.up.railway.app/user/profile/${params.username}`
             const token = localStorage.getItem('authenticationToken');
             if (!token) {
                 navigate('/');
@@ -65,7 +66,8 @@ export default function EditProfile({ setOpenEdit, profileData, setMe}) {
 
     async function sendData(data) {
         const token = localStorage.getItem('authenticationToken');
-        const url = `http://localhost:3000/user/edit-profile-picture`
+        // const url = `http://localhost:3000/user/edit-profile-picture`
+        const url = `https://daltonoswald-odinbook.up.railway.app/user/edit-profile-picture`
         const formData = {
             picture: data.secure_url
         };
@@ -92,7 +94,8 @@ export default function EditProfile({ setOpenEdit, profileData, setMe}) {
     async function handleEditSubmit(event) {
         event.preventDefault();
         const token = localStorage.getItem('authenticationToken');
-        const url = `http://localhost:3000/user/edit-profile`
+        // const url = `http://localhost:3000/user/edit-profile`
+        const url = `https://daltonoswald-odinbook.up.railway.app/user/edit-profile`
         const formData = {
             first_name: event.target.first_name.value,
             last_name: event.target.last_name.value,
