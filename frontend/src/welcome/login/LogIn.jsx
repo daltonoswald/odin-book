@@ -10,7 +10,7 @@ export default function LogIn({ setOpenLogIn, setOpenSignUp}) {
     const handleSubmit = async (event) => {
         event.preventDefault();
         // const url = `http://localhost:3000/user/log-in`
-        const url = `https://odin-book-production-20fa.up.railway.app/user/log-in`
+        const url = `https://daltonoswald-odinbook.up.railway.app/user/log-in`
         const formData = {
             username: event.target.username.value,
             password: event.target.password.value,
