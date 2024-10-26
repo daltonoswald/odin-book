@@ -34,7 +34,8 @@ export default function SignUp({ setOpenSignUp, setOpenLogIn }) {
         event.preventDefault();
 
         // const url = `http://localhost:3000/user/sign-up`
-        const url = `https://odin-book-production-20fa.up.railway.app/user/sign-up`
+        // const url = `https://odin-book-production-20fa.up.railway.app/user/sign-up`
+        const url = `https://daltonoswald-odinbook.up.railway.app/user/sign-up`
         const formData = {
             first_name: event.target.first_name.value,
             last_name: event.target.last_name.value,
