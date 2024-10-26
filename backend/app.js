@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(require('express-session')
     ({
-        secret: process.env.SECRET,
+        secret: process.env.SECRET || SECRET,
         resave: false,
         saveUninitialized: true,
         cookie: {
@@ -32,32 +32,12 @@ app.use(passport.session());
 app.use(cors({
     origin: [
         `http://localhost:5173`,
+        `https://daltonoswald-odinbook.netlify.app/`,
         '*'
     ],
     methods: ['GET', 'PUT', 'POST', 'DELETE'],
     optionsSuccessStatus: 204,
 }))
-
-// app.use(
-//     session({
-//         secret: process.env.SECRET || SECRET,
-//         resave: false,
-//         saveUninitialized: true,
-//         cookie: {
-//             maxAge: 24 * 60 * 60 * 1000
-//         },
-//         store: new PrismaSessionStore(
-//             new PrismaClient(),
-//             {
-//                 checkPeriod: 2 * 60 * 1000,
-//                 dbRecordIdIsSessionId: true,
-//                 dbRecordIdFunction: undefined
-//             }
-//         )
-//     })
-// )
-
-// app.use(passport.session());
 
 app.use('/', indexRouter);
 app.use('/user', userRouter);

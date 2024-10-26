@@ -24,7 +24,7 @@ exports.log_in = asyncHandler(async (req, res, next) => {
 
             const options = {};
             options.expiresIn = '7d';
-            const token = jwt.sign({ user }, process.env.TOKEN_KEY, options);
+            const token = jwt.sign({ user }, process.env.TOKEN_KEY || TOKEN_KEY, options);
 
             if (!isMatch) {
                 res.status(401).json({ message: "Incorrect username and password." });
