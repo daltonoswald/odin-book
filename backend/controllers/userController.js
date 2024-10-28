@@ -274,13 +274,6 @@ exports.profile = asyncHandler(async (req, res, next) => {
                 username: true,
                 bio: true,
                 picture: true,
-                // followed_by: {
-                //     where: {
-                //         followed_by_id: {
-                //             equals: authorizedUser.user.id
-                //         }
-                //     },
-                // },
                 followed_by: {
                     select: {
                         followed_by: {
@@ -290,7 +283,6 @@ exports.profile = asyncHandler(async (req, res, next) => {
                         }
                     }
                 },
-                // followed_by: true,
                 _count: {
                     select: { followed_by: true, following: true }
                 },
@@ -298,7 +290,6 @@ exports.profile = asyncHandler(async (req, res, next) => {
                     select: {
                         id: true,
                         content: true,
-                        // userId: true,
                         user: {
                             select: {
                                 first_name: true,
@@ -389,18 +380,36 @@ exports.edit_profile = [
                 const errorsMessages = errors.array().map((error) => error.msg);
                 res.json({ error: errorsMessages })
             } else {
-                const updatedUser = await prisma.user.update({
+                const usernameTaken = await prisma.findMany({
                     where: {
-                        id: authorizedUser.user.id
-                    },
-                    data: {
-                        first_name: req.body.first_name,
-                        last_name: req.body.last_name,
-                        username: req.body.username,
-                        bio: req.body.bio,
+                        username: {
+                            equals: req.body.username,
+                            mode: 'insensitive'
+                        }
                     }
                 })
-                res.json({ message: 'User updated', updatedUser: updatedUser, user: authorizedUser})
+                if (errors.isEmpty()) {
+                    const errorsMessages = errors.array().map((error) => error.msg);
+                    res.json({ error: errorsMessages });
+                } else {
+                    if (usernameTaken.length > 0) {
+                        res.status(409).json({ message: "Username is already in use." })
+                        return;
+                    } else {
+                        const updatedUser = await prisma.user.update({
+                            where: {
+                                id: authorizedUser.user.id
+                            },
+                            data: {
+                                first_name: req.body.first_name,
+                                last_name: req.body.last_name,
+                                username: req.body.username,
+                                bio: req.body.bio,
+                            }
+                        })
+                        res.json({ message: 'User updated', updatedUser: updatedUser, user: authorizedUser})
+                    }
+                }
             }
         } catch (err) {
             console.log(err);

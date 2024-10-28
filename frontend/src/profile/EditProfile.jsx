@@ -115,11 +115,9 @@ export default function EditProfile({ setOpenEdit, profileData, setMe}) {
             const data = await response.json();
 
             if (response.ok) {
-                console.log(data.updatedUser.username)
                 localStorage.setItem('username', data.updatedUser.username);
                 setMe(data.user)
                 setOpenEdit(false);
-                console.log(event.target.username.value);
                 navigate(`/profile/${event.target.username.value}`)
                 navigate(0);
             } else {
