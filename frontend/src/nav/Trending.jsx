@@ -65,13 +65,14 @@ export default function Trending() {
                         <>
                             {trendingUsers.map((user) => (
                                 <div className="trending-user" key={user.id} id={user.id}>
-                                    <div className='trending-left'>
-                                        <img src={user.picture} className="trending-user-picture" alt='trending user profile picture' />
-                                        <Link
-                                            to={`/profile/${user.username}`}
-                                            key={user.id}
-                                            >@{user.username}</Link>
-                                    </div>
+                                    <Link
+                                        to={`/profile/${user.username}`}
+                                        key={user.id}
+                                        className='trending-left'
+                                        >
+                                            <img src={user.picture} className="trending-user-picture" alt='trending user profile picture' />
+                                            <p className="trending-username">@{user.username}</p>
+                                    </Link>
                                 {(user.followed_by.length > 0) && (
                                 <div className='follow-container'>
                                     <img className='followed icon' id={user.id} src={followedIcon} alt='unfollow user' 

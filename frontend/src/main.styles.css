@@ -32,9 +32,13 @@ a:hover {
 
 button {
     background: #e4b461;
-    padding: .5em;
-    border: none;
+    padding: .5em 1.5em;
+    border: 2px solid black;
     border-radius: 16px;
+}
+
+button:hover {
+    box-shadow: black 0 0 3px;
 }
 
 .submit-button {
@@ -46,8 +50,8 @@ button {
     font-size: 16px;
     top: 1em;
     right: 1em;
-    height: 32px;
-    width: 32px;
+    /* height: 32px;
+    width: 32px; */
 }
 
 .error-message {

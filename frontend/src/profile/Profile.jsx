@@ -56,7 +56,6 @@ const Profile = () => {
                             setFollowing(true)
                         }
                     })
-                    console.log(profileData.user)
                     setMe(profileData.user);
                     setIsLoading(false);
                 }

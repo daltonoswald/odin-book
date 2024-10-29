@@ -18,13 +18,20 @@ export default function Postfeed({posts, isLoading, me, error}) {
                     <div className='post' key={post.id} id={post.id}>
                         <div className='post-info'>
                             <div className='post-info-left'>
-                                <img src={post.user.picture} className='post-profile-picture' alt='user profile picture'></img>
+                                <Link
+                                    to={`/profile/${post.user.username}`}
+                                    key={post.user.id}
+                                    >
+                                    <img src={post.user.picture} className='post-profile-picture' alt='user profile picture'></img>
+                                </Link>
                                 <div className='post-names'>
-                                    <p className='post-name'>{post.user.first_name} {post.user.last_name}</p>
                                     <Link 
                                         to={`/profile/${post.user.username}`}
                                         key={post.user.id}
-                                        >@{post.user.username}</Link>
+                                        >
+                                        <p className='post-name'>{post.user.first_name} {post.user.last_name}</p>
+                                        <p className='post-username'>@{post.user.username}</p>
+                                    </Link>
                                 </div>
                             </div>
                             <div className='post-info-right'>
@@ -57,14 +64,20 @@ export default function Postfeed({posts, isLoading, me, error}) {
                                 <div className='comment' key={comment.id} id={comment.id}>
                                     <div className='comment-info'>
                                         <div className='comment-info-left'>
-                                            <img src={comment.user.picture} className='comment-profile-picture' alt='user profile picture'></img>
+                                            <Link
+                                                to={`/profile/${comment.user.username}`}
+                                                key={comment.user.id}
+                                                >
+                                                <img src={comment.user.picture} className='comment-profile-picture' alt='user profile picture'></img>
+                                            </Link>
                                             <div className='comment-names'>
-                                                <p className='comment-name'>{comment.user.first_name} {comment.user.last_name}</p>
-                                                {/* <p className='comment-username'>{comment.user.username}</p> */}
-                                                <Link
+                                            <Link
                                                     to={`/profile/${comment.user.username}`}
                                                     key={comment.user.id}
-                                                    >@{comment.user.username}</Link>
+                                                    >
+                                                <p className='comment-name'>{comment.user.first_name} {comment.user.last_name}</p>
+                                                <p className='comment-username'>@{comment.user.username}</p>
+                                            </Link>
                                             </div>
                                         </div>
                                         <div className='comment-info-right'>

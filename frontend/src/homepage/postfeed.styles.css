@@ -15,13 +15,13 @@
 .post-profile-picture,
 .comment-profile-picture {
     height: 36px;
+    width: 36px;
     border-radius: 25%;
 }
 
 .post-info,
 .comment-info {
     display: flex;
-    /* align-items: center; */
     justify-content: space-between;
     align-items: flex-start;
 }
@@ -30,13 +30,20 @@
 .comment-info-left {
     display: flex;
     align-items: center;
+    gap: 4px;
 }
 
 .post-name,
-.comment-name,
+.post-username,
+.comment-username,
 .post-date,
 .comment-date {
     margin: 0;
+}
+
+.post-content,
+.comment-content {
+    margin: .5em 0;
 }
 
 .post-info-right,
@@ -44,6 +51,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    gap: 4px;
 }
 
 .post-likes,
