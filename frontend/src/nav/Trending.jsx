@@ -62,7 +62,7 @@ export default function Trending() {
                 <div className="trending-users">
                     <h3>Popular Users</h3>
                     {(trendingUsers !== null && !isLoading) && (
-                        <>
+                        <div className="trending-user-list">
                             {trendingUsers.map((user) => (
                                 <div className="trending-user" key={user.id} id={user.id}>
                                     <Link
@@ -89,7 +89,7 @@ export default function Trending() {
                             )}
                                 </div>
                             ))}
-                        </>
+                        </div>
                     )}
                 </div>
             </div>

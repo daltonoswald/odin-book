@@ -1,0 +1,99 @@
+@media only screen and (max-width: 600px) {
+    #root {
+        flex-direction: column;
+        justify-content: space-around;
+        width: 90vw;
+    }
+
+    .welcome-page {
+        flex-direction: column-reverse;
+    }
+
+    .welcome-left,
+    .welcome-right {
+        width: 100%;
+    }
+
+    .welcome-right {
+        border-bottom: 2px solid rgb(90, 90, 90);
+        border-top: none;
+        padding-bottom: 50px;
+    }
+
+    .welcome-left {
+        padding-top: 50px;
+        border: none;
+    }
+
+    .sign-up-form,
+    .log-in-form {
+        width: 100%;
+    }
+
+    .close-modal {
+        padding: 4px 8px;
+    }
+
+    .nav {
+        width: 100%;
+        justify-content: flex-end;
+        height: 15vh;
+    }
+
+    .nav-top,
+    .nav-bottom {
+        flex-direction: row;
+        align-items: center;
+        font-size: 24px;
+    }
+
+    .nav-top > button,
+    .nav-bottom > button {
+        text-wrap: nowrap;
+        width: auto;
+        padding: 4px 8px
+    }
+
+    .content {
+        width: 100%;
+        min-height: 85vh;
+        border: 2px solid rgb(90, 90, 90);
+    }
+
+    .post-date,
+    .comment-date {
+        font-size: 12px;
+    }
+
+    .trending {
+        flex-direction: column-reverse;
+    }
+
+    .topics,
+    .trending-users {
+        height: 40%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    .topics > a {
+        margin: 0 4px;
+        gap: 0;
+        font-size: 12px;
+    }
+    
+    .topics > a > p {
+        margin: 0;
+    }
+
+    .trending-users {
+        flex-direction: column;
+        height: 100%;
+        padding: 0;
+    }
+
+    .search-user {
+        font-size: 12px;
+    }
+}
