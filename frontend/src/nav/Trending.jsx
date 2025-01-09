@@ -54,7 +54,7 @@ export default function Trending() {
                             <img className="trending-icon" src={githubIcon} alt="github icon" />
                             <p>Github</p>
                     </a>
-                    <a href='https://linkedin.com/in/dalton-oswald-8aa955148' className="footer-linkedin">
+                    <a href='https://linkedin.com/in/daltonoswald' className="footer-linkedin">
                         <img className="trending-icon" src={linkedinIcon} alt="linkedin icon" />
                         <p>LinkedIn</p>
                     </a>
