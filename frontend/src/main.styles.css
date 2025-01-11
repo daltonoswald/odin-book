@@ -39,6 +39,7 @@ button {
 
 button:hover {
     box-shadow: black 0 0 3px;
+    cursor: pointer;
 }
 
 .submit-button {
