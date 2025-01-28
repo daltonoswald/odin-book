@@ -12,7 +12,7 @@ import EditProfile from './EditProfile';
 
 const Profile = () => {
     // const [token, setToken] = useState(localStorage.getItem('authenticationToken'))
-    // const [error, setError] = useState();
+    const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [profileData, setProfileData] = useState();
     const [me, setMe] = useState();
@@ -27,6 +27,7 @@ const Profile = () => {
             const url =`https://daltonoswald-odinbook.up.railway.app/user/profile/${params.username}`
             const token = localStorage.getItem('authenticationToken');
             if (!token) {
+                // navigate('/', {state: {errorMessage: 'JWT Token'}});
                 navigate('/');
             }
             const userToFind = {
@@ -46,10 +47,10 @@ const Profile = () => {
                     const errorData = await response.json();
                     setIsLoading(false);
                     console.error(`errorData`, errorData.error);
-                    // setError(errorData)
+                    setError(errorData)
                 }
                 if (response.ok) {
-                    const profileData = await response.json()
+                    const profileData = await response.json();
                     setProfileData(profileData.profile);
                     profileData.profile.followed_by.forEach((element) => {
                         if (element.followed_by.id === profileData.user.user.id) {
@@ -57,6 +58,7 @@ const Profile = () => {
                         }
                     })
                     setMe(profileData.user);
+                    setError(null);
                     setIsLoading(false);
                 }
             } catch (error) {
@@ -76,7 +78,23 @@ const Profile = () => {
         setOpenEdit(true);
     }
 
-    if (!isLoading) {
+    if (!isLoading && error) {
+        console.log(error.error)
+        return (
+            <>
+                <Nav />
+                <div className='content'>
+                    <div className='profile-error'>
+                        {error.error}
+                    </div>
+                </div>
+                <Trending />
+            </>
+        )
+        
+    }
+
+    if (!isLoading && !error) {
     return (
         <>
         <Nav />
