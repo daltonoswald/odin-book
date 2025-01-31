@@ -5,6 +5,7 @@ import { handleFollow, handleUnfollow } from '../utils/postUtils'
 import followIcon from '../assets/icons/heartplus.svg'
 import followedIcon from '../assets/icons/heart.svg'
 import unfollowIcon from '../assets/icons/heartbroken.svg'
+import odinIcon from '../assets/icons/the-odin-project.svg'
 import './search.styles.css'
 import Trending from '../nav/Trending';
 
@@ -82,7 +83,7 @@ const Search = () => {
                                 <Link
                                     to={`/profile/${searchResult.username}`}
                                     >
-                                    <img src={searchResult.picture} className='search-profile-picture' alt='profile picture' /></Link>
+                                    <img src={searchResult.picture || odinIcon} className='search-profile-picture' alt='profile picture' /></Link>
                                 <Link
                                     to={`/profile/${searchResult.username}`}
                                     >@{searchResult.username}</Link>

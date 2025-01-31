@@ -10,6 +10,7 @@ h1, h2 {
 .profile-header-top-left {
     display: flex;
     align-items: center;
+    gap: .5em;
 }
 
 .profile-page-picture {
@@ -78,4 +79,11 @@ h1, h2 {
 .edit-profile-picture-image {
     height: 128px;
     width: 128px;
+}
+
+.profile-error {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

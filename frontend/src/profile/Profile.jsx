@@ -5,6 +5,7 @@ import { handleFollow, handleUnfollow } from '../utils/postUtils'
 import followIcon from '../assets/icons/heartplus.svg'
 import unfollowIcon from '../assets/icons/heartbroken.svg'
 import followedIcon from '../assets/icons/heart.svg';
+import odinIcon from '../assets/icons/the-odin-project.svg'
 import './profile.styles.css'
 import Postfeed from '../homepage/Postfeed';
 import Trending from '../nav/Trending';
@@ -102,7 +103,7 @@ const Profile = () => {
             <div className='profile-header'>
                 <div className='profile-header-top'>
                     <div className='profile-header-top-left'>
-                            <img src={profileData.picture} className='profile-page-picture' alt='profile picture' />
+                            <img src={profileData.picture || odinIcon} className='profile-page-picture' alt='profile picture' />
                             <div className='profile-header-top-name'>
                             <h1>{profileData.first_name} {profileData.last_name}</h1>
                             <h2>@{profileData.username}</h2>

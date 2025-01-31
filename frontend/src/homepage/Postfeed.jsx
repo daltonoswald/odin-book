@@ -5,6 +5,7 @@ import {    handleLikePost, handleUnlikePost,
             handleDeleteComment, handleNewComment } from '../utils/postUtils'
 import smileIcon from '../assets/icons/smile.svg'
 import frownIcon from '../assets/icons/frown.svg'
+import odinIcon from '../assets/icons/the-odin-project.svg'
 import './postfeed.styles.css'
 import { Link } from "react-router-dom";
 
@@ -22,7 +23,7 @@ export default function Postfeed({posts, isLoading, me, error}) {
                                     to={`/profile/${post.user.username}`}
                                     key={post.user.id}
                                     >
-                                    <img src={post.user.picture} className='post-profile-picture' alt='user profile picture'></img>
+                                    <img src={post.user.picture || odinIcon} className='post-profile-picture' alt='user profile picture'></img>
                                 </Link>
                                 <div className='post-names'>
                                     <Link 
@@ -68,7 +69,7 @@ export default function Postfeed({posts, isLoading, me, error}) {
                                                 to={`/profile/${comment.user.username}`}
                                                 key={comment.user.id}
                                                 >
-                                                <img src={comment.user.picture} className='comment-profile-picture' alt='user profile picture'></img>
+                                                <img src={comment.user.picture || odinIcon} className='comment-profile-picture' alt='user profile picture'></img>
                                             </Link>
                                             <div className='comment-names'>
                                             <Link

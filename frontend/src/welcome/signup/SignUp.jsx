@@ -24,8 +24,8 @@ export default function SignUp({ setOpenSignUp, setOpenLogIn }) {
             })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
-                console.log(data.secure_url);
+                // console.log(data);
+                // console.log(data.secure_url);
                 handleSend(event, data);
             })
     }

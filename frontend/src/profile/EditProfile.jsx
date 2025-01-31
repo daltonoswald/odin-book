@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import odinIcon from '../assets/icons/the-odin-project.svg'
 import './profile.styles.css'
 
 export default function EditProfile({ setOpenEdit, profileData, setMe}) {
@@ -133,7 +134,7 @@ export default function EditProfile({ setOpenEdit, profileData, setMe}) {
         <div className="edit-profile-modal">
             <button onClick={closeModal} className="close-modal">X</button>
             <div className="edit-profile-picture">
-                <img src={profileData.picture} className={'edit-profile-picture-image'} />
+                <img src={profileData.picture  || odinIcon} className={'edit-profile-picture-image'} />
                 <input type='file' onChange={(e) => setImage(e.target.files[0])}></input>
                 <button onClick={handlePictureSubmit}>Upload</button>
             </div>
