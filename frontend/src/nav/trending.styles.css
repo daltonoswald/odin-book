@@ -24,6 +24,10 @@
     gap: 8px;
 }
 
+.trending-users > h3 {
+    margin-top: 0;
+}
+
 .trending-icon {
     height: 24px;
 }

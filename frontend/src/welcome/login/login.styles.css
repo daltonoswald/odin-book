@@ -13,6 +13,7 @@
     left: 25%;
     z-index: 1;
     padding: 1em;
+    border-radius: 8px;
 }
 .log-in-hero > h1 {
     color: #e4b461;

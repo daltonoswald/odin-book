@@ -12,6 +12,11 @@
     background-color: #fdfeff;
 }
 
+.post-info-left > a,
+.comment-info-left > a {
+    height: 36px;
+}
+
 .post-profile-picture,
 .comment-profile-picture {
     height: 36px;
@@ -63,6 +68,10 @@
     padding: .5em 1em;
     border-radius: 8px;
     margin: 4px;
+}
+
+.icon-container {
+    height: 24px;
 }
 
 .post-likes > p,

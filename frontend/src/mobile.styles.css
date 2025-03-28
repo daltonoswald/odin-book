@@ -69,7 +69,12 @@
         flex-direction: column-reverse;
     }
 
-    .topics,
+    .topics {
+        height: 40%;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
     .trending-users {
         height: 40%;
         display: flex;
@@ -79,12 +84,13 @@
 
     .topics > a {
         margin: 0 4px;
-        gap: 0;
+        gap: 4px;
         font-size: 12px;
     }
     
     .topics > a > p {
         margin: 0;
+        text-align: center;
     }
 
     .trending-users {
