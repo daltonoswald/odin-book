@@ -75,6 +75,8 @@
         height: 40%;
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
+        justify-items: center;
+        padding: 20px 0;
     }
 
     .topics > a {
@@ -95,6 +97,12 @@
         justify-content: space-around;
         height: 100%;
         padding: 0;
+    }
+
+    .trending-users,
+    .topics {
+        width: 90%;
+        margin: 0 auto;
     }
 
     .trending-users > h3 {
